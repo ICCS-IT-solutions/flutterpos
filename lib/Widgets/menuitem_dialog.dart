@@ -11,6 +11,12 @@ import "package:logger/logger.dart";
 import "../Bloc/modules/menu_bloc.dart";
 import "../Models/menuitem_datamodel.dart";
 
+//My rules: 4 space indents. 
+//Line up all curly brackets vertically. 
+//The Exception to this is the setstate method and some build methods when sufficiently short.
+//Otherwise don't tell me to follow your style. 
+//Authoritarianism no matter what form it takes stinks of hatred and intolerance.
+
 class MenuItemDialog extends StatefulWidget 
 {
 	final MenuItem? existingItem;
