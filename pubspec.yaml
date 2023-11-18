@@ -42,6 +42,11 @@ dependencies:
   sqflite_common_ffi: ^2.3.0+3
   meta: ^1.9.1
   logger: ^2.0.2+1
+  theme_provider: ^0.6.0
+  path_provider: ^2.1.1
+  mysql_client: ^0.0.27
+  crypto: ^3.0.3
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +57,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
