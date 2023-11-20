@@ -14,8 +14,6 @@ import "../Models/menuitem_datamodel.dart";
 //My rules: 4 space indents. 
 //Line up all curly brackets vertically. 
 //The Exception to this is the setstate method and some build methods when sufficiently short.
-//Otherwise don't tell me to follow your style. 
-//Authoritarianism no matter what form it takes stinks of hatred and intolerance.
 
 class MenuItemDialog extends StatefulWidget 
 {
@@ -168,9 +166,6 @@ Future<String?> SelectImage() async
 				final imageBytes = await imageFile.readAsBytes();
 				SelectedImage = base64Encode(imageBytes);
 				return SelectedImage;
-				//Logging tells me that when this method fires the image path is updated as it should be, but how do I update the image
-				//shown in the selector?
-				//How can I trigger this image update ? 
 			}
 			else
 			{

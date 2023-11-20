@@ -29,11 +29,6 @@ class MainScreen extends StatelessWidget
 				//Note that I use gender-neutral terminology in the linguistically CORRECT manner, because I don't know the actual gender of the user, also it is not an important datapoint in POS software.
 				//I also don't care a jot about your pro-conformity rhetoric that wears the colours of diversity like a wolf does sheep's clothes, so there you have it...
 				
-				//FYI:
-				//I'm an autie, so I know what real diversity is about, and it is about respecting the individuals who are unique, and encouraging uniqueness.
-				//Don't like it? Go whistle. Just make sure to make things right with your creator or you WILL go there.
-				//I am also sick and tired of your platitudes and fake claims to support real diversity.
-				//End FYI.
 				title: Row(
 				  children: [
 				    const Text('Restaurant & Bar'),
