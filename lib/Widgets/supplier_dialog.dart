@@ -83,10 +83,11 @@ class _SupplierDialogState extends State<SupplierDialog>
 								final newSupplier = Supplier(
 									supplierName: supplierNameController.text,
 									emailAddress: supplierEmailAddressController.text,
-									contactNum: supplierContactNumberController.text,
-									streetAddress: supplierStreetAddressController.text,
-									cityName: supplierCityNameController.text,
+									contactNumber: supplierContactNumberController.text,
+									address: supplierStreetAddressController.text,
+									city: supplierCityNameController.text,
 									postalCode: supplierPostalCodeController.text,
+									//These are intentionally zeroed on creation.
 									outstandingCredit: 0,
 									currentPayment: 0,
 									totalPurchases: 0
