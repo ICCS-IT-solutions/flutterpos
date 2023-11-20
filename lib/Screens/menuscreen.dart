@@ -93,7 +93,7 @@ class _MenuScreenState extends State<MenuScreen>
 										Column(
 											mainAxisSize: MainAxisSize.min,
 											children: [
-												SizedBox(width:100,height:100,child: Image.memory(base64Decode(state.menuItems![index].menuItemimage!))),
+												SizedBox(width:100,height:100,child: Image.memory(base64Decode(state.menuItems![index].menuItemimageData!))),
 											]
 										),
 										const SizedBox(width: 20,),
@@ -180,7 +180,7 @@ class _MenuScreenState extends State<MenuScreen>
 										Column(
 											mainAxisSize: MainAxisSize.min,
 											children: [
-												SizedBox(width:100,height:100,child: Image.memory(state.menuItems![index].menuItemimage! as Uint8List)),
+												SizedBox(width:100,height:100,child: Image.memory(state.menuItems![index].menuItemimageData! as Uint8List)),
 											]
 										),
 										const SizedBox(width: 20,),

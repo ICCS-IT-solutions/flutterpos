@@ -2,6 +2,7 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:flutterpos/Screens/ordermanagerscreen.dart";
 
 import "../Bloc/modules/order_manager_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
@@ -51,6 +52,16 @@ class MainScreen extends StatelessWidget
 					icon: const Icon(Icons.menu_open), 
 					label: const Text("See detailed menu")
 						),
+					ElevatedButton.icon(onPressed: ()
+					{
+						Navigator.of(context).push(
+							MaterialPageRoute(
+								builder: (context)=>OrderManagerScreen(userBloc: userBloc, orderManagerBloc: orderManagerBloc)
+							)
+						);
+					}, 
+					icon: const Icon(Icons.checklist_outlined), 
+					label: const Text("Order manager")),
 					ElevatedButton.icon(
 						onPressed: () 
 						{
@@ -77,7 +88,7 @@ class MainScreen extends StatelessWidget
 										{
 										return Container(
 										decoration: BoxDecoration(
-											image:DecorationImage(image:Image.memory(base64Decode(state.menuItems![index].menuItemimage!)).image,	fit:BoxFit.cover)
+											image:DecorationImage(image:Image.memory(base64Decode(state.menuItems![index].menuItemimageData!)).image,	fit:BoxFit.cover)
 										),
 										child: ListTile(
 											title: Text(state.menuItems![index].menuItemName),

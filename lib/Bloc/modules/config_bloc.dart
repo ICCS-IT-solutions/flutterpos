@@ -13,10 +13,10 @@ part 'config_bloc_state.dart';
 class ConfigBloc extends Bloc<ConfigBlocEvent, ConfigBlocState> 
 {
   Logger logger = Logger();
-  final _Config = Config();
+  final _SetupManager = SetupManager();
   Future<File?> retrieveConfigFile() async
   {
-    final configFile = await _Config.RetrieveConfigFile();
+    final configFile = await _SetupManager.RetrieveConfigFile();
     return configFile;
   }
   ConfigBloc() : super(ConfigBlocInitialState()) 
@@ -26,7 +26,7 @@ class ConfigBloc extends Bloc<ConfigBlocEvent, ConfigBlocState>
     {
        try
       {
-        final configFile = await _Config.CreateDbConnectionConfig
+        final configFile = await _SetupManager.CreateDbConnectionConfig
         (
           event.host,
           event.dbName,
@@ -52,10 +52,10 @@ class ConfigBloc extends Bloc<ConfigBlocEvent, ConfigBlocState>
     {
       try
       {
-        final configFile = await _Config.RetrieveConfigFile();
+        final configFile = await _SetupManager.RetrieveConfigFile();
         if(configFile != null)
         {
-          await _Config.CreateNewDatabase(
+          await _SetupManager.CreateNewDatabase(
             configFile: configFile, 
             newDbName: event.newDbName,
             adminUserName:event.adminUserName,
@@ -89,7 +89,7 @@ class ConfigBloc extends Bloc<ConfigBlocEvent, ConfigBlocState>
     {
       try
       {
-        final configFile = await _Config.CreateDbConnectionConfig
+        final configFile = await _SetupManager.CreateDbConnectionConfig
         (
           event.host,
           event.dbName,
@@ -117,10 +117,10 @@ class ConfigBloc extends Bloc<ConfigBlocEvent, ConfigBlocState>
     {
       try
       {
-        final configFile = await _Config.RetrieveConfigFile();
+        final configFile = await _SetupManager.RetrieveConfigFile();
         if(configFile != null)
         {
-          await _Config.CreateNewDatabase(
+          await _SetupManager.CreateNewDatabase(
             configFile: configFile, 
             newDbName: event.newDbName,
             adminUserName:event.adminUserName,

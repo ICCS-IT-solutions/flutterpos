@@ -36,7 +36,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 	void initState()
 	{
 		super.initState();
-		SelectedImage = widget.existingItem?.menuItemimage;
+		SelectedImage = widget.existingItem?.menuItemimageData;
 	}
     @override
     Widget build(BuildContext context)
@@ -46,7 +46,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 			itemNameController.text = widget.existingItem!.menuItemName;
 			itemDescriptionController.text = widget.existingItem!.menuItemDescription ?? "";
 			itemPriceController.text = widget.existingItem!.price.toString();
-			SelectedImage = widget.existingItem!.menuItemimage;
+			SelectedImage = widget.existingItem!.menuItemimageData;
 		}
         return AlertDialog(
 			title: const Text("Add new menu item"),
@@ -85,7 +85,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 											menuItemName: itemNameController.text,
 											menuItemDescription: itemDescriptionController.text,
 											price: double.parse(itemPriceController.text),
-											menuItemimage: SelectedImage, //Replace this with our selected image so as to not trigger the image picker again.
+											menuItemimageData: SelectedImage, //Replace this with our selected image so as to not trigger the image picker again.
 										);
 										if(widget.existingItem != null)
 										{

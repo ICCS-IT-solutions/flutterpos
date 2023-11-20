@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:path_provider/path_provider.dart';
 
-class Config
+class SetupManager
 {
 	bool IsSetupComplete = false;
 	bool initialSetupComplete = false;

@@ -7,9 +7,9 @@ class MenuItem
 	final String menuItemName;
 	final String? menuItemDescription;
 	final double price;
-	final String? menuItemimage;
+	final String? menuItemimageData;
 
-	MenuItem({required this.menuItemName, required this.menuItemDescription, required this.price, required this.menuItemimage});
+	MenuItem({required this.menuItemName, required this.menuItemDescription, required this.price, required this.menuItemimageData});
 
 	factory MenuItem.fromDictionary(Map<String, dynamic> dictionary)
 	{
@@ -21,7 +21,7 @@ class MenuItem
 				//The value returned is blob, but how do i get back a string from it?
 				menuItemDescription: dictionary["menuitem_description"].toString(),
 				price: (dictionary["price"] is String) ? double.parse(dictionary["price"]) : (dictionary["price"] as num).toDouble(),
-				menuItemimage: dictionary["menuitem_image"].toString(),
+				menuItemimageData: dictionary["menuitem_image"].toString(),
 			);
 		}
 		catch(ex)
@@ -31,7 +31,7 @@ class MenuItem
 				menuItemName: dictionary["menuitem_name"],
 				menuItemDescription: dictionary["menuitem_description"].toString(),
 				price: (dictionary["price"] is String) ? double.parse(dictionary["price"]) : (dictionary["price"] as num).toDouble(),
-				menuItemimage: null,
+				menuItemimageData: null,
 			);
 		}
 	}
@@ -42,7 +42,7 @@ class MenuItem
 			"menuitem_name": menuItemName,
 			"menuitem_description": menuItemDescription,
 			"price": price,
-			"menuitem_image": menuItemimage!,
+			"menuitem_image": menuItemimageData!,
 		};
 		return dictionary;
 	}

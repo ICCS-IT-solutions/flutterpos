@@ -1,31 +1,51 @@
-import 'dart:typed_data';
 
-class ProductDataModel
+
+import 'package:logger/logger.dart';
+
+class Product
 {
 	final String productName; //product_name : varchar
 	final String description; //description: text
-	final String price; //price : decimal
-	final Uint8List image; //not present, probably should create this as a varchar to store a link to an image or the file name and path if local storage
+	final double price; //price : decimal
+	final String? imageData; //not present, probably should create this as a varchar to store a link to an image or the file name and path if local storage
 	final String category;
 	final int stockQuantity;
 	final int shortages; //How many items went missing, and on whose watch did this occur?
 	final DateTime createdAt;
 	final DateTime updatedAt;
-	ProductDataModel({required this.productName, required this.description, required this.price, required this.image, required this.category, required this.stockQuantity, required this.shortages, required this.createdAt, required this.updatedAt});
+	Product({required this.productName, required this.description, required this.price, required this.imageData, required this.category, required this.stockQuantity, required this.shortages, required this.createdAt, required this.updatedAt});
 
-	factory ProductDataModel.fromDictionary(Map<String, dynamic> dictionary)
+	factory Product.fromDictionary(Map<String, dynamic> dictionary)
 	{
-		return ProductDataModel(
-			productName: dictionary["product_name"],
-			description: dictionary["description"],
-			price: dictionary["price"],
-			image: dictionary["image"],
-			category: dictionary["category"],
-			stockQuantity: dictionary["quantity"],
-			shortages: dictionary["shortages"],
-			createdAt: dictionary["created_at"],
-			updatedAt: dictionary["updated_at"],
-		);
+		try
+		{
+			return Product(
+				productName: dictionary["product_name"],
+				description: dictionary["description"].toString(),
+				price: (dictionary["price"] is String) ? double.parse(dictionary["price"]) : (dictionary["price"] as num).toDouble(),
+				imageData: dictionary["image"].toString(),
+				category: dictionary["category"],
+				stockQuantity: dictionary["quantity"],
+				shortages: dictionary["shortages"],
+				createdAt: dictionary["created_at"],
+				updatedAt: dictionary["updated_at"],
+			);
+		}
+		catch(ex)
+		{
+			Logger().e(ex);
+			return Product(
+				productName: dictionary["product_name"],
+				description: dictionary["description"].toString(),
+				price: (dictionary["price"] is String) ? double.parse(dictionary["price"]) : (dictionary["price"] as num).toDouble(),
+				imageData: null,
+				category: dictionary["category"],
+				stockQuantity: dictionary["quantity"],
+				shortages: dictionary["shortages"],
+				createdAt: dictionary["created_at"],
+				updatedAt: dictionary["updated_at"],
+			);
+		}
 	}
 	Map<String, dynamic> toDictionary()
 	{
@@ -33,7 +53,7 @@ class ProductDataModel
 			"product_name": productName,
 			"description": description,
 			"price": price,
-			"image": image,
+			"image": imageData,
 			"category": category,
 			"quantity": stockQuantity,
 			"shortages": shortages,

@@ -58,7 +58,7 @@ class MysqlDbHelper implements BaseDbHelper
     MySqlConnection? conn;
     try
     {
-      var dbConfigFile = await Config().RetrieveConfigFile();
+      var dbConfigFile = await SetupManager().RetrieveConfigFile();
       if (dbConfigFile == null)
       {
         logger.e("No database configuration file found");

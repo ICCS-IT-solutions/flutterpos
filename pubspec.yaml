@@ -47,6 +47,7 @@ dependencies:
   mysql_client: ^0.0.27
   crypto: ^3.0.3
   image_picker: ^1.0.4
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
