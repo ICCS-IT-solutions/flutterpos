@@ -3,23 +3,28 @@
 import "dart:convert";
 import "dart:io";
 
+import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:flutter/material.dart';
 import "package:flutterpos/Bloc/modules/config_bloc.dart";
+
 import "../Bloc/main_app_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
+import '../Bloc/modules/order_manager_bloc.dart';
+import "../Bloc/modules/user_bloc.dart";
+
 import "loginscreen.dart";
 import "setupscreen.dart";
 import "mainscreen.dart";
-import "../Bloc/modules/user_bloc.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
+
 
 class MainApp extends StatelessWidget 
 {
 	final UserBloc userBloc;
 	final ConfigBloc configBloc;
 	final MainAppBloc mainAppBloc;
+	final OrderManagerBloc orderManagerBloc;
 	final MenuBloc menuBloc;
-	const MainApp({required this.menuBloc,required this.userBloc, required this.configBloc, required this.mainAppBloc, super.key});
+	const MainApp({required this.orderManagerBloc, required this.menuBloc, required this.userBloc, required this.configBloc, required this.mainAppBloc, super.key});
 	
 	Future<File?> initConfigFile() async
 	{
@@ -66,7 +71,7 @@ class MainApp extends StatelessWidget
 					{
 						if(state is LoginSuccess && state.isAuthenticated)
 						{
-						return MainScreen(menuBloc: menuBloc,userBloc: userBloc);
+						return MainScreen(orderManagerBloc: orderManagerBloc,menuBloc: menuBloc,userBloc: userBloc);
 						}
 						else
 						{
