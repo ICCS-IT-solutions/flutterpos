@@ -42,8 +42,18 @@ class MenuItem
 			"menuitem_name": menuItemName,
 			"menuitem_description": menuItemDescription,
 			"price": price,
-			"menuitem_image": menuItemimageData!,
+			"menuitem_image": menuItemimageData,
 		};
 		return dictionary;
+	}
+	//Create a copywith function in all my other datamodel classes. It will help a shitload to fix updating them :D
+	copyWith({required String menuItemName, String? menuItemDescription, required double price, String? menuItemimageData}) 
+	{
+		return MenuItem(
+			menuItemName: menuItemName,
+			menuItemDescription: menuItemDescription,
+			price: price,
+			menuItemimageData: menuItemimageData
+		);
 	}
 }

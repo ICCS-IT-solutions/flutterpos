@@ -88,29 +88,25 @@ class MenuBloc extends Bloc<MenuBlocEvent, MenuBlocState>
 		//Emit a new state with the updated data
 		return MenuBlocSuccess(menuItems: updatedMenuItems, currentMenuItem: null, isLoading: false, hasFinishedLoading: true, message: "");
 	}
-
-
 	MenuBloc({required this.configBloc}) : super(MenuBlocInitial()) 
 	{
 		_initDbHelper();
 		_initDatabaseName();
 		on<AddMenuItem>((event, emit) async
 		{
+			emit(MenuBlocLoading());
 			await dbHelper.CreateEntry(dbName, tableName, event.menuItem.toDictionary());
-			final currentMenuItem = event.menuItem;
-			emit(MenuBlocSuccess(menuItems: const [], currentMenuItem: currentMenuItem, isLoading: false, hasFinishedLoading: true, message: "Menu item creation successful"));
+			emit(await _ExecutePostOpUpdate());
 		});
 		on<UpdateMenuItem>((event, emit) async
 		{	
 			await dbHelper.UpdateEntry(dbName, tableName, event.menuItem.toDictionary(), "menuitem_name = ?", [event.menuItem.menuItemName]);
-			final updatedState = await _ExecutePostOpUpdate();
-			emit(updatedState);
+			emit(await _ExecutePostOpUpdate());
 		});
 		on<DeleteMenuItem>((event, emit) async
 		{
 			await dbHelper.DeleteEntry(dbName, tableName, "menuitem_name = ?", [event.menuItem.menuItemName]);
-			final updatedState = await _ExecutePostOpUpdate();
-			emit(updatedState);
+			emit(await _ExecutePostOpUpdate());
 		});
 		on<LoadMenuItems>((event, emit) async 
 		{

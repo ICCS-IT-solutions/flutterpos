@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:logger/logger.dart';
 
 import '../Models/user_datamodel.dart';
 
@@ -84,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen>
 										),
 										TextFormField(
 											controller: userFirstNameController,
-											obscureText: true,
 											decoration: const InputDecoration(
 											labelText: "Name"
 											),
@@ -92,7 +92,6 @@ class _LoginScreenState extends State<LoginScreen>
 										),  
 										TextFormField(
 											controller: userSurnameController,
-											obscureText: true,
 											decoration: const InputDecoration(
 											labelText: "Surname"
 											),
@@ -221,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen>
 										content: Text("Something went wrong during registration.")
 										)
 									);
-									print("Exception occurred: $ex");
+									Logger().e("Exception occurred: $ex");
 									}
 
 								},

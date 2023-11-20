@@ -28,7 +28,7 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 		final updateProductData = await dbHelper.ReadEntries(dbName, tableName, null, null);
 		final updatedProducts =  updateProductData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
 		//Emit a new state with the updated data
-		return OrderManagerBlocState(products: updatedProducts, currentProduct: null, IsLoading: false, IsSuccessful: true, IsFailure: false, response: "Update successful");
+		return OrderManagerBlocState(products: updatedProducts, product: null, IsLoading: false, IsSuccessful: true, IsFailure: false, response: "Update successful");
 	}
 
 	Future<MysqlDbHelper?> initDbHelper() async
@@ -83,11 +83,11 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 			return null;
 		}
 	}
-	OrderManagerBloc({required this.configBloc}) : super(OrderManagerBlocInitial()) 
+	OrderManagerBloc({required this.configBloc}) : super(const OrderManagerBlocInitial()) 
 	{
 		_initDbHelper();
 		_initDatabaseName();
-		on<PostOrder>((event, emit) 
+		on<SubmitOrder>((event, emit) 
 		{
 			//Todo: Build out the event handler responsible for the user's submission of orders. 
 			//The event handler should be triggered by a button next to (or in the same tile as) each item.
@@ -98,7 +98,12 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 			//Execute a query against the database to read all entries in the table.
 			final productsData = await dbHelper.ReadEntries(dbName, tableName, null, null);
 			final products =  productsData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
-			emit(OrderManagerBlocSuccess(successMsg: "Products loaded successfully.", products: products));
+			emit(OrderManagerBlocSuccess(successMsg: "Products loaded successfully.", loadedProducts: products));
+		});
+		on<AddProduct>((event, emit) async
+		{
+			final updatedState = await _ExecutePostOpUpdate();
+			emit(updatedState);
 		});
 	}
 }

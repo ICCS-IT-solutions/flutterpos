@@ -33,58 +33,83 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 		return Scaffold(
 			appBar: AppBar(
 				title: const Text("Order manager"),
+				actions: [
+					ElevatedButton(onPressed: (){}, child: Text("Add item")),
+					ElevatedButton(onPressed: (){}, child: Text("Remove item")),
+				],
 			),
 			body: BuildProductsList(context)
 		);		
 	}
 	Widget BuildProductsList(BuildContext context)
-	{
-		return BlocBuilder<OrderManagerBloc, OrderManagerBlocState>(
-			builder: (context, state)
-			{
-				if(state is OrderManagerBlocSuccess)
-				{
-					return ListView.builder(
-						itemCount: state.products.length,
-						itemBuilder: (context, index) 
+	{	
+		//Size = missing? WTFH? Infer it from the parent, NEVER assume infinity or null!
+		return Column(
+			children: [
+				//Header row
+				const Row(
+					children: [
+						Expanded(child: Text("Product name")),
+						Expanded(child: Text("Price")),
+						Expanded(child: Text("Category")),
+						Expanded(child: Text("Quantity")),
+						Expanded(child: Text("Shortages")),
+						Expanded(child: Text("Supplier")),
+						SizedBox(width:50),
+						Expanded(child: Text("Actions")),
+					]
+				),
+				//List body
+				Expanded(
+					child: BlocBuilder<OrderManagerBloc, OrderManagerBlocState>(
+						builder: (context, state)
 						{
-							//How else can i construct a list item widget that won't whine about overflow but will adjust?
-							return ListTile(
-								title: Text(state.products[index].productName),
-								subtitle: Row(
-									children: [
-									//Need a more reliable way to display this as R XX XXX.yy, the international standard format for SA currency amounts
-									Flexible(child: Text("Price: ${NumberFormat.currency(symbol: 'R' , decimalDigits: 2).format(state.products[index].price)}")),
-									const SizedBox(width:10),
-									Flexible(child: Text("Category: ${state.products[index].category}", overflow: TextOverflow.ellipsis,)),
-									const SizedBox(width:10),
-									Flexible(child: Text("Quantity: ${state.products[index].stockQuantity}", overflow: TextOverflow.ellipsis)),
-									const SizedBox(width:10),
-									Flexible(child: Text("Shortages: ${state.products[index].shortages}", overflow: TextOverflow.ellipsis)),
-									],
-								),
-								//catch, log on exceptions but continue rendering... don't bloody break the run on these!
-								trailing: Column(
-								  children: [
-								    ElevatedButton.icon(
-								    	//Do nothing yet. Later: show a dialog with the details for submitting an order.
-								    	//The submit method ultimately should enable the app to send an email to the supplier listed
-								    	//Note: add supplier to database -> products table, create a dropdown list of registered suppliers
-								    	//This will be pulled in from the db as well. Need a new table for them that includes contact info.
-								    	onPressed: () {},
-								    	icon: Icon(Icons.check_box_outlined),
-								    	label: const Text("Order"),
-								    ),
-								  ],
-								),	
-							);
-						});
-				}
-				else
-				{
-					return const Center(child: CircularProgressIndicator());
-				}
-			}
+							if(state is OrderManagerBlocSuccess)
+							{
+								return SingleChildScrollView(
+									scrollDirection: Axis.vertical,
+									child: Column(
+										children: List.generate(state.products.length, (index)
+										{		
+											return Padding(
+												padding: const EdgeInsets.all(4),
+												child:Row(
+												children: [
+													Expanded(child: Text(state.products[index].productName)),
+													Expanded(child: Text(NumberFormat.currency(symbol: "R", decimalDigits: 2).format(state.products[index].price))),
+													Expanded(child: Text(state.products[index].category)),
+													Expanded(child: Text(state.products[index].stockQuantity.toString())),
+													Expanded(child: Text(state.products[index].shortages.toString())),
+													Expanded(child: Text(state.products[index].supplierName)),
+													const SizedBox(width:50),
+													ElevatedButton.icon(
+														onPressed: (){}, 
+														icon: const Icon(Icons.check_box_outlined), 
+														label: const Text("Order")
+													),
+													const SizedBox(width:10),
+													ElevatedButton.icon(
+														onPressed: (){}, 
+														icon: const Icon(Icons.do_disturb),
+														label: const Text("Cancel")
+													),
+													const SizedBox(width:10),											
+												]
+											));
+										})
+									),
+								);
+							}
+							else
+							{	
+								return const Center(
+									child: CircularProgressIndicator(),
+								);
+							}
+						},
+					)
+				),
+		  	],
 		);
 	}
 }

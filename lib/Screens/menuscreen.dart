@@ -65,6 +65,7 @@ class _MenuScreenState extends State<MenuScreen>
 							setState((){
 								SelectedImage = newImage;
 							});
+							
 						});
 					}
 				);
@@ -122,7 +123,7 @@ class _MenuScreenState extends State<MenuScreen>
 										const SizedBox(width:10),
 										ElevatedButton.icon(onPressed: ()
 										{
-											//Delete this item:
+											widget.menuBloc.add(DeleteMenuItem(state.menuItems![index]));
 										},
 										icon: const Icon(Icons.delete),
 										label: const Text("Delete")

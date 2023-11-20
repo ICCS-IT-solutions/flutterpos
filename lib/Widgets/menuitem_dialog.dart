@@ -20,7 +20,8 @@ class MenuItemDialog extends StatefulWidget
 	final MenuItem? existingItem;
 	final MenuBloc menuBloc;
 	final Function(String?) onImageSelected;
-    const MenuItemDialog({super.key, required this.menuBloc, this.existingItem, required this.onImageSelected});
+	final VoidCallback? onActionDone;
+    const MenuItemDialog({this.onActionDone, super.key, required this.menuBloc, this.existingItem, required this.onImageSelected});
 
 	@override
 	State<MenuItemDialog> createState() => _MenuItemDialogState();
@@ -32,6 +33,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 	TextEditingController itemDescriptionController = TextEditingController();
 	TextEditingController itemPriceController = TextEditingController();
 	String? SelectedImage;
+	
 	@override
 	void initState()
 	{
@@ -88,14 +90,23 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 											menuItemimageData: SelectedImage, //Replace this with our selected image so as to not trigger the image picker again.
 										);
 										if(widget.existingItem != null)
-										{
-											widget.menuBloc.add(UpdateMenuItem(widget.existingItem!));
+										{	
+											//Got you, you filthy bugger! 
+											//Now it will update as it should.
+											final updatedMenuItem = widget.existingItem!.copyWith(
+												menuItemName: menuItem.menuItemName,
+												menuItemDescription: menuItem.menuItemDescription,
+												price: menuItem.price,
+												menuItemimageData: menuItem.menuItemimageData
+											);
+											widget.menuBloc.add(UpdateMenuItem(updatedMenuItem));
 										}
 										else
 										{
 											widget.menuBloc.add(AddMenuItem(menuItem));
 										}
 										Navigator.of(context).pop();
+										widget.menuBloc.add(LoadMenuItems(menuItems: []));
 									},
 									child: const Text("Submit"),
 								),
@@ -109,7 +120,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 										itemPriceController.clear();
 										Navigator.of(context).pop();
 									},
-									child: const Text("Clear")
+									child: const Text("Cancel")
 								),
 							]
 						)
@@ -176,6 +187,10 @@ Future<String?> SelectImage() async
 							content: Text("No image selected"),
 						)
 					);
+					File imageFile = File("../images/placeholder.png");
+					final imageBytes = await imageFile.readAsBytes();
+					SelectedImage = base64Encode(imageBytes);
+					return SelectedImage;
 				}
 				return null;
 			}
