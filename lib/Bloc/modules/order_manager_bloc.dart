@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import '../../Models/product_datamodel.dart';
+import '../../Models/supplier_datamodel.dart';
 import 'config_bloc.dart';
 
 part 'order_manager_bloc_event.dart';
@@ -21,6 +22,7 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 	final ConfigBloc configBloc;
 	String? dbName;
 	final String tableName = 'products';
+	final String suppliersTableName = 'suppliers';
 	late MysqlDbHelper dbHelper;
 
 	Future<OrderManagerBlocState> _ExecutePostOpUpdate() async
@@ -29,6 +31,15 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 		final updatedProducts =  updateProductData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
 		//Emit a new state with the updated data
 		return OrderManagerBlocState(products: updatedProducts, product: null, IsLoading: false, IsSuccessful: true, IsFailure: false, response: "Update successful");
+	}
+
+		Future<OrderManagerBlocState> _ExecuteTargetedPostOpUpdate({required String dbName, required String tableName}) async
+	{
+		final updatedItemsData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+		final updatedItems =  updatedItemsData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
+		//Emit a new state with the updated data
+		//Replace the Bloc being used with the one you want to use, and the relevant mappings
+		return OrderManagerBlocState(products: updatedItems, product: null, IsLoading: false, IsSuccessful: true, IsFailure: false, response: "Update successful");
 	}
 
 	Future<MysqlDbHelper?> initDbHelper() async
@@ -103,6 +114,12 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 		on<AddProduct>((event, emit) async
 		{
 			final updatedState = await _ExecutePostOpUpdate();
+			emit(updatedState);
+		});
+		on<RegisterSupplier>((event, emit) async
+		{
+			await dbHelper.CreateEntry(dbName, tableName, event.currentSupplier.toDictionary());
+			final updatedState = await _ExecuteTargetedPostOpUpdate(dbName: dbName!, tableName: suppliersTableName);
 			emit(updatedState);
 		});
 	}

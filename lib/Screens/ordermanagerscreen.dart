@@ -1,10 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:flutterpos/Widgets/supplier_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Bloc/modules/order_manager_bloc.dart';
 import '../Bloc/modules/user_bloc.dart';
+import '../Models/supplier_datamodel.dart';
 
 class OrderManagerScreen extends StatefulWidget
 {	
@@ -26,6 +28,21 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 		super.initState();
 		widget.orderManagerBloc.add(LoadProducts());
 	}
+
+	Future<void> ShowSupplierDialog(BuildContext context, {Supplier? existingSupplier}) async
+	{
+		if(mounted)
+		{
+			showDialog(context: context, builder: (context)
+			{
+				return StatefulBuilder(builder: (context, setState)
+				{
+					return SupplierDialog(orderManagerBloc: widget.orderManagerBloc);
+				});
+			});
+		}
+	}
+
 	@override
 	Widget build(BuildContext context)
 	{
@@ -34,8 +51,13 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 			appBar: AppBar(
 				title: const Text("Order manager"),
 				actions: [
-					ElevatedButton(onPressed: (){}, child: Text("Add item")),
-					ElevatedButton(onPressed: (){}, child: Text("Remove item")),
+					ElevatedButton(onPressed: (){}, child: const Text("Add item")),
+					ElevatedButton(onPressed: (){}, child: const Text("Remove item")),
+					ElevatedButton(onPressed: ()
+					{
+						ShowSupplierDialog(context);
+					}, 
+					child: const Text("Add supplier")),
 				],
 			),
 			body: BuildProductsList(context)
@@ -69,18 +91,18 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 								return SingleChildScrollView(
 									scrollDirection: Axis.vertical,
 									child: Column(
-										children: List.generate(state.products.length, (index)
+										children: List.generate(state.products!.length, (index)
 										{		
 											return Padding(
 												padding: const EdgeInsets.all(4),
 												child:Row(
 												children: [
-													Expanded(child: Text(state.products[index].productName)),
-													Expanded(child: Text(NumberFormat.currency(symbol: "R", decimalDigits: 2).format(state.products[index].price))),
-													Expanded(child: Text(state.products[index].category)),
-													Expanded(child: Text(state.products[index].stockQuantity.toString())),
-													Expanded(child: Text(state.products[index].shortages.toString())),
-													Expanded(child: Text(state.products[index].supplierName)),
+													Expanded(child: Text(state.products![index].productName)),
+													Expanded(child: Text(NumberFormat.currency(symbol: "R", decimalDigits: 2).format(state.products![index].price))),
+													Expanded(child: Text(state.products![index].category)),
+													Expanded(child: Text(state.products![index].stockQuantity.toString())),
+													Expanded(child: Text(state.products![index].shortages.toString())),
+													Expanded(child: Text(state.products![index].supplierName)),
 													const SizedBox(width:50),
 													ElevatedButton.icon(
 														onPressed: (){}, 

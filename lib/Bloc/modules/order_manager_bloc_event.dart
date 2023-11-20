@@ -16,3 +16,14 @@ class SubmitOrder extends OrderManagerBlocEvent
 {
 
 }
+class RegisterSupplier extends OrderManagerBlocEvent 
+{
+	final Supplier currentSupplier;
+	RegisterSupplier({required this.currentSupplier});
+}
+
+class LoadSuppliers extends OrderManagerBlocEvent 
+{
+	final List<Supplier> suppliers;
+	LoadSuppliers({required this.suppliers});
+}

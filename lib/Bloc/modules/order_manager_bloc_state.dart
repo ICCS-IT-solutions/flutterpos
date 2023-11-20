@@ -5,14 +5,16 @@ part of 'order_manager_bloc.dart';
 @immutable
 class OrderManagerBlocState 
 {
-	final List<Product> products;
+	final List<Product>? products;
+	final List<Supplier>? suppliers;
 	final Product? product;
+	final Supplier? supplier;
 	final bool IsLoading;
 	final bool IsSuccessful;
 	final bool IsFailure;
 	final String response;
 
-	const OrderManagerBlocState({required this.products, required this.product, required this.IsLoading, required this.IsSuccessful, required this.IsFailure, required this.response});
+	const OrderManagerBlocState({this.products, this.suppliers, this.supplier, this.product, required this.IsLoading, required this.IsSuccessful, required this.IsFailure, required this.response});
 }
 
 final class OrderManagerBlocInitial extends OrderManagerBlocState 
