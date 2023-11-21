@@ -23,6 +23,7 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 	String? dbName;
 	final String tableName = 'products';
 	final String suppliersTableName = 'suppliers';
+	final String ordersTableName = 'orders';
 	late MysqlDbHelper dbHelper;
 
 	Future<OrderManagerBlocState> _ExecutePostOpUpdate() async
