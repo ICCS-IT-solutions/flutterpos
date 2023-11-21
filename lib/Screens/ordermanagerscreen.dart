@@ -77,7 +77,7 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 										final amount = amountController.text;
 										final supplier = supplierController.text;
 										final product = itemToOrder.copyWith(supplierName: supplier, onOrder: int.parse(amount));
-										orderManagerBloc.add(AddProduct(productToAdd: product));
+										orderManagerBloc.add(UpdateProduct(productToUpdate: product));
 										Navigator.of(context).pop();
 									}, child: const Text("Confirm order")),
 									const SizedBox(width: 10),

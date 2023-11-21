@@ -84,8 +84,7 @@ class Product
 				int? onOrder, 
 				int? threshold, 
 				int? shortages, 
-				DateTime? 
-				createdAt, 
+				DateTime? createdAt, 
 				DateTime? updatedAt})
 	{
 		return Product(
