@@ -106,7 +106,7 @@ class _MenuItemDialogState extends State<MenuItemDialog>
 											widget.menuBloc.add(AddMenuItem(menuItem));
 										}
 										Navigator.of(context).pop();
-										widget.menuBloc.add(LoadMenuItems(menuItems: []));
+										widget.menuBloc.add(LoadMenuItems(menuItems: const []));
 									},
 									child: const Text("Submit"),
 								),

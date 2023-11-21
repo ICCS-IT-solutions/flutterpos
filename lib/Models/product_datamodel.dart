@@ -11,10 +11,12 @@ class Product
 	final String? imageData; //not present, probably should create this as a varchar to store a link to an image or the file name and path if local storage
 	final String category;
 	final int stockQuantity;
+	final int onOrder;
+	final int threshold;
 	final int shortages; //How many items went missing, and on whose watch did this occur?
 	final DateTime createdAt;
 	final DateTime updatedAt;
-	Product({required this.productName, required this.supplierName, required this.description, required this.price, required this.imageData, required this.category, required this.stockQuantity, required this.shortages, required this.createdAt, required this.updatedAt});
+	Product({required this.productName, required this.supplierName, required this.description, required this.price, required this.imageData, required this.category, required this.stockQuantity, required this.onOrder, required this.threshold ,required this.shortages, required this.createdAt, required this.updatedAt});
 
 	factory Product.fromDictionary(Map<String, dynamic> dictionary)
 	{
@@ -28,6 +30,8 @@ class Product
 				imageData: dictionary["image"].toString(),
 				category: dictionary["category"],
 				stockQuantity: dictionary["quantity"],
+				onOrder: dictionary["on_order"],
+				threshold: dictionary["threshold"],
 				shortages: dictionary["shortages"],
 				createdAt: dictionary["created_at"],
 				updatedAt: dictionary["updated_at"],
@@ -44,6 +48,8 @@ class Product
 				imageData: null,
 				category: dictionary["category"],
 				stockQuantity: dictionary["quantity"],
+				onOrder: dictionary["on_order"],
+				threshold: dictionary["threshold"],
 				shortages: dictionary["shortages"],
 				createdAt: dictionary["created_at"],
 				updatedAt: dictionary["updated_at"],
@@ -60,6 +66,8 @@ class Product
 			"image": imageData,
 			"category": category,
 			"quantity": stockQuantity,
+			"on_order": onOrder,
+			"threshold": threshold,
 			"shortages": shortages,
 			"created_at": createdAt,
 			"updated_at": updatedAt,

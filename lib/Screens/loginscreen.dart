@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
 import 'package:logger/logger.dart';
 
 import '../Models/user_datamodel.dart';
@@ -23,7 +24,8 @@ class LoginScreen extends StatefulWidget
 	///This avoids instantiating it again, which can derail things, or cause a train-wreck. 
 	///I highly advise you to specify it in the constructor when instantiating this screen widget, well you kinda' have to :D
 	final UserBloc userBloc;
-	const LoginScreen({required this.userBloc ,super.key});
+	final UserManagerBloc userManagerBloc;
+	const LoginScreen({required this.userManagerBloc,required this.userBloc ,super.key});
 
 	@override
 	State<LoginScreen> createState() => _LoginScreenState();
@@ -40,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen>
 	TextEditingController userNameController = TextEditingController();
 	TextEditingController userFirstNameController = TextEditingController();
 	TextEditingController userSurnameController = TextEditingController();
+	TextEditingController emailAddressController  =TextEditingController();
 	TextEditingController passwordController = TextEditingController();
 	TextEditingController retypePasswordController = TextEditingController();
 	String selectedRole = "User";
@@ -96,6 +99,25 @@ class _LoginScreenState extends State<LoginScreen>
 											labelText: "Surname"
 											),
 											validator: (value) => value == "" ? "Please enter your surname" : null,
+										),
+										TextFormField(
+											controller: emailAddressController,
+											decoration: const InputDecoration(
+												labelText: "Email address"
+											),
+											validator: (value) 
+											{
+												//Check the incoming value is not empty:
+												if(value!.isEmpty)
+												{
+													return "Please enter an email address";
+												}
+												else if(!value.contains("@"))
+												{
+													return "Please enter a valid email address";
+												}
+												return null;
+											},
 										),  
 										TextFormField(
 											controller: passwordController,
@@ -198,14 +220,15 @@ class _LoginScreenState extends State<LoginScreen>
 										{
 											if(isNewUser)
 											{
-											final user = UserDataModel(
+											final user = User(
 												userName: userNameController.text,
 												fullName: "${userFirstNameController.text}  ${userSurnameController.text}",
+												emailAddress: emailAddressController.text,
 												password: passwordController.text,
 												userRole: MapRoleNameToRole(selectedRole),
 												userRights: UserRightsHandler().GetUserRights(MapRoleNameToRole(selectedRole))
 											);
-											widget.userBloc.add(Register(userData: user));
+											widget.userManagerBloc.add(Register(userData: user));
 											}
 											else
 											{
@@ -256,29 +279,29 @@ class _LoginScreenState extends State<LoginScreen>
 		body: BlocListener<UserBloc, UserBlocState>(
 			listener:(context,state) 
 			{
-			if(state is RegistrationSuccess)
-			{
-				ScaffoldMessenger.of(context).showSnackBar(
-				const SnackBar(
-					content: Text("Registration successful"),
-				)
-				);
-			}
-			else if (state is LoginSuccess)
-			{
-				ScaffoldMessenger.of(context).showSnackBar(
-				const SnackBar(
-					content: Text("Login successful"),
-				)
-				);
-				//Navigate to the mainscreen.
-			}
+				if(state is AuthenticationSuccess)
+				{
+					ScaffoldMessenger.of(context).showSnackBar(
+					const SnackBar(
+						content: Text("Registration successful"),
+					)
+					);
+				}
+				else if (state is AuthenticationSuccess)
+				{
+					ScaffoldMessenger.of(context).showSnackBar(
+					const SnackBar(
+						content: Text("Login successful"),
+					)
+					);
+					//Navigate to the mainscreen.
+				}
 			},
 			child: BlocBuilder<UserBloc, UserBlocState>(
-			builder: (context, state)
-			{
-				return LoginForm();
-			}
+				builder: (context, state)
+				{
+					return LoginForm();
+				}
 			)
 		)
 		);

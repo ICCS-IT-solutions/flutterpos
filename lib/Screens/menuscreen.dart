@@ -235,7 +235,7 @@ class _MenuScreenState extends State<MenuScreen>
 						),
 					);
 				}
-				final currentUser  = state.currentUser;
+				final currentUser  = state.user;
 				Logger().i("Current user: ${currentUser?.fullName}");
 				//Check whether the user has the Can_Manage_Inventory right:
 				if(currentUser!.userRights.contains(UserRight.Can_Manage_Inventory))

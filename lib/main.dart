@@ -4,6 +4,7 @@ import 'package:flutterpos/Bloc/modules/config_bloc.dart';
 import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
 import 'package:flutterpos/Bloc/modules/order_manager_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
 import 'package:flutterpos/Screens/mainapp.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:theme_provider/theme_provider.dart';
@@ -63,12 +64,13 @@ void main()
 	final ConfigBloc configBloc = ConfigBloc();
 	final MainAppBloc mainAppBloc = MainAppBloc();
 	final MenuBloc menuBloc = MenuBloc(configBloc: ConfigBloc());
+	final UserManagerBloc userManagerBloc = UserManagerBloc(configBloc: ConfigBloc());
 	final OrderManagerBloc orderManagerBloc = OrderManagerBloc(configBloc: ConfigBloc());
 	runApp(ThemeProvider(
 		themes: appThemes,
 		saveThemesOnChange: true,
 		loadThemeOnInit: true,
-		child: MyApp(orderManagerBlocInstance: orderManagerBloc, menuBlocInstance: menuBloc, userBlocInstance: userBloc, configBlocInstance: configBloc, mainAppBlocInstance: mainAppBloc),
+		child: MyApp(userManagerBlocInstance: userManagerBloc, orderManagerBlocInstance: orderManagerBloc, menuBlocInstance: menuBloc, userBlocInstance: userBloc, configBlocInstance: configBloc, mainAppBlocInstance: mainAppBloc),
 		)
 	);
 }
@@ -83,7 +85,8 @@ class MyApp extends StatelessWidget
 	final MainAppBloc mainAppBlocInstance;
 	final OrderManagerBloc orderManagerBlocInstance;
 	final MenuBloc menuBlocInstance;
-	const MyApp({required this.orderManagerBlocInstance, required this.menuBlocInstance, required this.userBlocInstance, required this.configBlocInstance, required this.mainAppBlocInstance, super.key});
+	final UserManagerBloc userManagerBlocInstance;
+	const MyApp({required this.userManagerBlocInstance ,required this.orderManagerBlocInstance, required this.menuBlocInstance, required this.userBlocInstance, required this.configBlocInstance, required this.mainAppBlocInstance, super.key});
 
 	@override
 	Widget build(BuildContext context)
@@ -104,6 +107,9 @@ class MyApp extends StatelessWidget
 				),
 				BlocProvider<OrderManagerBloc>(
 					create:(context) => orderManagerBlocInstance,
+				),
+				BlocProvider(
+					create: (context) => userManagerBlocInstance,
 				)
 			],
 			child: ThemeConsumer(
@@ -112,7 +118,7 @@ class MyApp extends StatelessWidget
 					{
 						return MaterialApp(
 							theme: ThemeProvider.themeOf(context).data,
-							home:  MainApp(orderManagerBloc: orderManagerBlocInstance,menuBloc: menuBlocInstance, userBloc: userBlocInstance, configBloc: configBlocInstance, mainAppBloc: mainAppBlocInstance),
+							home:  MainApp(userManagerBloc: userManagerBlocInstance,orderManagerBloc: orderManagerBlocInstance,menuBloc: menuBlocInstance, userBloc: userBlocInstance, configBloc: configBlocInstance, mainAppBloc: mainAppBlocInstance),
 						);
 					}
 				)

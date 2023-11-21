@@ -2,28 +2,31 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 import "package:flutterpos/Screens/ordermanagerscreen.dart";
 
 import "../Bloc/modules/order_manager_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
 import "../Bloc/modules/user_bloc.dart";
 import "menuscreen.dart";
+import "usermanagerscreen.dart";
 
 class MainScreen extends StatelessWidget 
 {
 	final UserBloc userBloc;
 	final MenuBloc menuBloc;
+	final UserManagerBloc userManagerBloc;
 	final OrderManagerBloc orderManagerBloc;
 	//Add the instances and params for the other blocs as needed, also so they can be passed to the other screen classes when instantiated, thus managing them from a central loc rather than all over the place...
 	//As again, in my code files, I rule, therefore I decide the style rules :P
 	//One most important rule: No stair-stepped curly brackets, line them up vertically. 
 	//Need a way to set the tab stop to 4 spaces not two, ugh.
-	const MainScreen({required this.orderManagerBloc,required this.menuBloc, required this.userBloc, super.key});
+	const MainScreen({required this.userManagerBloc ,required this.orderManagerBloc,required this.menuBloc, required this.userBloc, super.key});
 
 	@override
 	Widget build(BuildContext context) 
 	{
-		menuBloc.add(LoadMenuItems(menuItems: []));
+		menuBloc.add(LoadMenuItems(menuItems: const []));
 		return BlocBuilder<UserBloc, UserBlocState>(
 			builder: (context,state) 
 			{
@@ -39,11 +42,22 @@ class MainScreen extends StatelessWidget
 						children: [
 							const Text('Restaurant & Bar'),
 							const SizedBox(width: 80),
-							Text(userBloc.state.currentUser!.fullName ?? ""),
+							Text(userBloc.state.user!.fullName ?? ""),
 						],
 						),
 						actions: [
-							//Log off
+							ElevatedButton.icon(
+								onPressed: ()
+								{
+									Navigator.of(context).push(
+										MaterialPageRoute(
+											builder: (context) => UserManagementScreen(userBloc: userBloc, userManagerBloc: userManagerBloc),
+										)
+									);
+								},
+								icon: const Icon(Icons.settings_applications_outlined),
+								label: const Text("User manager")
+							),
 							ElevatedButton.icon(onPressed: ()
 							{
 								Navigator.of(context).push(
@@ -55,14 +69,14 @@ class MainScreen extends StatelessWidget
 							icon: const Icon(Icons.menu_open), 
 							label: const Text("See detailed menu")
 								),
-						ElevatedButton.icon(onPressed:()
-							{
-								Navigator.of(context).push(
-									MaterialPageRoute(
-										builder: (context)=>OrderManagerScreen(userBloc: userBloc, orderManagerBloc: orderManagerBloc)
-									)
-								);
-							}, 
+							ElevatedButton.icon(onPressed:()
+								{
+									Navigator.of(context).push(
+										MaterialPageRoute(
+											builder: (context)=>OrderManagerScreen(userBloc: userBloc, orderManagerBloc: orderManagerBloc)
+										)
+									);
+								}, 
 							icon: const Icon(Icons.checklist_outlined), 
 							label: const Text("Order manager")),
 							ElevatedButton.icon(

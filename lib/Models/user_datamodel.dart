@@ -57,10 +57,11 @@ enum UserRight
 }
 
 //Should the user's hashed password and salt be kept here as variables, or does one retrieve that from the database on login?
-class UserDataModel
+class User
 {
 	final String userName;
 	final String? fullName;
+	final String? emailAddress;
 	final String password;
 	final Role userRole;
 	final String? hashedPassword;
@@ -68,7 +69,7 @@ class UserDataModel
 
 	final List<UserRight> userRights;
 
-	UserDataModel({required this.userName, required this.fullName, required this.password, this.hashedPassword, this.salt, required this.userRole, required this.userRights});
+	User({required this.userName, required this.fullName, required this.emailAddress, required this.password, this.hashedPassword, this.salt, required this.userRole, required this.userRights});
 
 	Map<String, dynamic> toDictionary()
 	{
@@ -77,6 +78,7 @@ class UserDataModel
 		{
 			"userName": userName,
 			"fullName": fullName,
+			"emailAddress": emailAddress,
 			"password": password,
 			"hashedPassword": AuthManager().HashPassword(password, salt),
 			"salt": salt,
@@ -95,11 +97,12 @@ class UserDataModel
 	return dictionary;
   	}
 
-	factory UserDataModel.fromDictionary(Map<String,dynamic> dictionary)
+	factory User.fromDictionary(Map<String,dynamic> dictionary)
 	{
-		return UserDataModel(
+		return User(
 			userName: dictionary["userName"],
 			fullName: dictionary["fullName"], 
+			emailAddress: dictionary["emailAddress"],
 			password: dictionary["password"],
 			hashedPassword: dictionary["hashedPassword"],
 			salt: dictionary["salt"], 

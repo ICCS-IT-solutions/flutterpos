@@ -6,6 +6,7 @@ import "dart:io";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:flutter/material.dart';
 import "package:flutterpos/Bloc/modules/config_bloc.dart";
+import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 
 import "../Bloc/main_app_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
@@ -23,8 +24,9 @@ class MainApp extends StatelessWidget
 	final ConfigBloc configBloc;
 	final MainAppBloc mainAppBloc;
 	final OrderManagerBloc orderManagerBloc;
+	final UserManagerBloc userManagerBloc;
 	final MenuBloc menuBloc;
-	const MainApp({required this.orderManagerBloc, required this.menuBloc, required this.userBloc, required this.configBloc, required this.mainAppBloc, super.key});
+	const MainApp({required this.userManagerBloc, required this.orderManagerBloc, required this.menuBloc, required this.userBloc, required this.configBloc, required this.mainAppBloc, super.key});
 	
 	Future<File?> initConfigFile() async
 	{
@@ -69,14 +71,14 @@ class MainApp extends StatelessWidget
 					return BlocBuilder<UserBloc,UserBlocState>(
 					builder: (context, state)
 					{
-						if(state is LoginSuccess && state.isAuthenticated)
+						if(state is AuthenticationSuccess && state.isAuthenticated)
 						{
-						return MainScreen(orderManagerBloc: orderManagerBloc,menuBloc: menuBloc,userBloc: userBloc);
+						return MainScreen(userManagerBloc: userManagerBloc,orderManagerBloc: orderManagerBloc,menuBloc: menuBloc,userBloc: userBloc);
 						}
 						else
 						{
 						//Will need to see the configfile and look for the two props that control the setup state, but that's later's job...
-						return LoginScreen(userBloc: userBloc);
+						return LoginScreen(userManagerBloc: userManagerBloc, userBloc: userBloc);
 						}
 					}
 					);

@@ -51,13 +51,22 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 			appBar: AppBar(
 				title: const Text("Order manager"),
 				actions: [
+					//Add item: Add a new item to the products database table.
+					//Update selected: Update the data on an existing item.
+					//Remove item: Remove an item from the products database table.
+					//The add/edit item dialog should include a dropdown linked to the suppliers table, 
+					//and the products table should reference the same data point for consistency
 					ElevatedButton(onPressed: (){}, child: const Text("Add item")),
+					ElevatedButton(onPressed: (){}, child: const Text("Update selected")),
 					ElevatedButton(onPressed: (){}, child: const Text("Remove item")),
+					//Register a new supplier
 					ElevatedButton(onPressed: ()
 					{
 						ShowSupplierDialog(context);
 					}, 
 					child: const Text("Add supplier")),
+					//Submit the active order as an email.
+					ElevatedButton(onPressed: (){}, child: const Text("Submit order"))
 				],
 			),
 			body: BuildProductsList(context)
@@ -66,72 +75,60 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 	Widget BuildProductsList(BuildContext context)
 	{	
 		//Size = missing? WTFH? Infer it from the parent, NEVER assume infinity or null!
-		return Column(
-			children: [
-				//Header row
-				const Row(
-					children: [
-						Expanded(child: Text("Product name")),
-						Expanded(child: Text("Price")),
-						Expanded(child: Text("Category")),
-						Expanded(child: Text("Quantity")),
-						Expanded(child: Text("Shortages")),
-						Expanded(child: Text("Supplier")),
-						SizedBox(width:50),
-						Expanded(child: Text("Actions")),
-					]
-				),
-				//List body
-				Expanded(
-					child: BlocBuilder<OrderManagerBloc, OrderManagerBlocState>(
-						builder: (context, state)
-						{
-							if(state is OrderManagerBlocSuccess)
+		return BlocBuilder<OrderManagerBloc,OrderManagerBlocState>(
+			builder:(context,state)
+			{
+				if (state is OrderManagerBlocSuccess)
+				{
+					return SingleChildScrollView(
+						scrollDirection: Axis.vertical,
+						child: DataTable(
+							columns: const[
+								DataColumn(label: Text('Product name', overflow: TextOverflow.ellipsis,)),
+								DataColumn(label: Text('Price', overflow: TextOverflow.fade,)),
+								DataColumn(label: Text('Category', overflow: TextOverflow.fade,)),
+								DataColumn(label: Text('Quantity', overflow: TextOverflow.fade,)),
+								DataColumn(label: Text('Low threshold', overflow: TextOverflow.ellipsis,)),
+								DataColumn(label: Text('On order', overflow: TextOverflow.ellipsis,)),
+								DataColumn(label: Text('Shortages', overflow: TextOverflow.ellipsis,)),
+								DataColumn(label: Text('Supplier', overflow: TextOverflow.fade,)),
+								DataColumn(label: Text('Actions', overflow: TextOverflow.fade,)),
+							],
+							rows: state.products!.map((product) 
 							{
-								return SingleChildScrollView(
-									scrollDirection: Axis.vertical,
-									child: Column(
-										children: List.generate(state.products!.length, (index)
-										{		
-											return Padding(
-												padding: const EdgeInsets.all(4),
-												child:Row(
-												children: [
-													Expanded(child: Text(state.products![index].productName)),
-													Expanded(child: Text(NumberFormat.currency(symbol: "R", decimalDigits: 2).format(state.products![index].price))),
-													Expanded(child: Text(state.products![index].category)),
-													Expanded(child: Text(state.products![index].stockQuantity.toString())),
-													Expanded(child: Text(state.products![index].shortages.toString())),
-													Expanded(child: Text(state.products![index].supplierName)),
-													const SizedBox(width:50),
-													ElevatedButton.icon(
-														onPressed: (){}, 
-														icon: const Icon(Icons.check_box_outlined), 
-														label: const Text("Order")
-													),
-													const SizedBox(width:10),
-													ElevatedButton.icon(
-														onPressed: (){}, 
-														icon: const Icon(Icons.do_disturb),
-														label: const Text("Cancel")
-													),
-													const SizedBox(width:10),											
-												]
-											));
-										})
-									),
-								);
-							}
-							else
-							{	
-								return const Center(
-									child: CircularProgressIndicator(),
-								);
-							}
-						},
-					)
-				),
-		  	],
+							return DataRow(
+								cells: [
+									DataCell(Text(product.productName, overflow: TextOverflow.fade,)),
+									DataCell(Text(NumberFormat.currency(symbol: "R", decimalDigits: 2).format(product.price), overflow: TextOverflow.fade,)),
+									DataCell(Text(product.category, overflow: TextOverflow.fade,)),
+									DataCell(Text(product.stockQuantity.toString(), overflow: TextOverflow.fade,)),
+									DataCell(Text(product.threshold.toString(), overflow: TextOverflow.fade,)),
+									DataCell(Text(product.onOrder.toString(), overflow: TextOverflow.fade,)),
+									DataCell(Text(product.shortages.toString(), overflow: TextOverflow.fade,)),
+									DataCell(Text(product.supplierName, overflow: TextOverflow.fade,)),
+									DataCell(Row(children: [
+										//Expected functionality: Order: adds a product to the order list
+										//Cancel: removes a product from the order list
+										ElevatedButton.icon(onPressed: (){}, 
+										icon: const Icon(Icons.check_box_outlined),
+										label: const Text("Order")),
+										const SizedBox(width:10),
+										ElevatedButton.icon(onPressed: (){}, 
+										icon: const Icon(Icons.do_disturb) ,
+										label: const Text("Cancel")),
+									])
+								)
+							]);
+						}).toList()),
+					);
+				}
+				else
+				{
+					return const Center(
+						child: Text("No products found"),
+					);
+				}
+			}
 		);
 	}
 }

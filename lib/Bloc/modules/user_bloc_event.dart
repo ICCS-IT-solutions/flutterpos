@@ -13,11 +13,7 @@ class Login extends UserBlocEvent
 	//For now, simply log the user in.
 }
 
-class Register extends UserBlocEvent 
-{
-	final UserDataModel userData;
-	Register({required this.userData});
-}
+
 
 class Logoff extends UserBlocEvent 
 {
