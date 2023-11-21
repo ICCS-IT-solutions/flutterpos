@@ -16,6 +16,8 @@ import '../Widgets/menuitem_dialog.dart';
 //The menu from which the user orders should be on the mainscreen. 
 //What should be presented here is a tabulated list that can be managed with the appropriate user rights.
 //To handle the user rights issue, we need the user bloc here too, and can look at the userBloc.state.currentUser to see what rights the user has.
+//
+//Still to be done: Add new items, update selected, remove items, and submit order.
 class MenuScreen extends StatefulWidget
 {
 	final MenuBloc menuBloc;

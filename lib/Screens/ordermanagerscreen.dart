@@ -1,8 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:flutterpos/Models/product_datamodel.dart';
 import 'package:flutterpos/Widgets/supplier_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 import '../Bloc/modules/order_manager_bloc.dart';
 import '../Bloc/modules/user_bloc.dart';
@@ -28,7 +30,6 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 		super.initState();
 		widget.orderManagerBloc.add(LoadProducts());
 	}
-
 	Future<void> ShowSupplierDialog(BuildContext context, {Supplier? existingSupplier}) async
 	{
 		if(mounted)
@@ -42,7 +43,82 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 			});
 		}
 	}
-
+	void ShowOrderDialog(BuildContext context, {required OrderManagerBloc orderManagerBloc,Product? itemToOrder}) async
+	{
+		//This dialog to be shown here should allow the user to select the supplier and enter an amount to order.
+		showDialog(context: context, builder: (context)
+		{	
+			TextEditingController amountController = TextEditingController();
+			TextEditingController supplierController = TextEditingController();
+			Logger().i("Order dialog for product ${itemToOrder!.productName} triggered");
+			return AlertDialog(
+				title: const Text("Order product"),
+				content: Column(
+					mainAxisSize: MainAxisSize.min,
+					children: [
+						Text("Order ${itemToOrder.productName}"),
+						TextFormField(
+							controller: amountController,
+							decoration: const InputDecoration(labelText: "Amount"),
+							keyboardType: TextInputType.number,
+							validator: (value)=> value == null || value.isEmpty ? "Please enter an amount" : null
+							),
+						TextFormField(
+							controller: supplierController,
+							decoration: const InputDecoration(labelText: "Supplier"),
+							validator: (value)=> value == null || value.isEmpty ? "Please enter the supplier name" : null
+							),
+							const SizedBox(height: 10),
+							Row(
+								mainAxisAlignment: MainAxisAlignment.center,
+								children: [
+									ElevatedButton(onPressed: ()
+									{	
+										final amount = amountController.text;
+										final supplier = supplierController.text;
+										final product = itemToOrder.copyWith(supplierName: supplier, onOrder: int.parse(amount));
+										orderManagerBloc.add(AddProduct(productToAdd: product));
+										Navigator.of(context).pop();
+									}, child: const Text("Confirm order")),
+									const SizedBox(width: 10),
+									ElevatedButton(onPressed: ()
+									{
+										Navigator.of(context).pop();
+									}, child: const Text("Cancel")),
+								]
+							),
+						],
+				)
+			);
+		});
+	}
+	void ShowCancelOrderDialog(BuildContext context, {required OrderManagerBloc orderManagerBloc,Product? itemToCancel}) async
+	{
+		//Show the user a dialog requesting confirmation to cancel an order.
+		//If the user confirms, then the order should be removed from the database.
+		//If the user cancels, then the order should remain in the database.
+		showDialog(context: context, builder: (context)
+		{
+			Logger().i("Cancel order dialog for product ${itemToCancel!.productName} triggered");
+			return AlertDialog(
+				title: const Text("Cancel order"),
+				content: const Text("Are you sure you want to cancel this order?"),
+				actions: [
+					TextButton(onPressed: ()
+					{	
+						Navigator.pop(context);
+					}, 
+					child: const Text("Cancel")),
+					TextButton(onPressed: ()
+					{
+						final product = itemToCancel.copyWith(onOrder: 0);
+						orderManagerBloc.add(UpdateProduct(productToUpdate: product));
+						Navigator.of(context).pop;
+					}, child: const Text("Confirm")),
+				]
+			);
+		});
+	}
 	@override
 	Widget build(BuildContext context)
 	{
@@ -109,11 +185,18 @@ class _OrderManagerScreenState extends State<OrderManagerScreen>
 									DataCell(Row(children: [
 										//Expected functionality: Order: adds a product to the order list
 										//Cancel: removes a product from the order list
-										ElevatedButton.icon(onPressed: (){}, 
+										ElevatedButton.icon(onPressed:() 
+										{
+											//How to get the item from which this func is triggered?
+											ShowOrderDialog(context, orderManagerBloc: widget.orderManagerBloc, itemToOrder: product);
+										},
 										icon: const Icon(Icons.check_box_outlined),
 										label: const Text("Order")),
 										const SizedBox(width:10),
-										ElevatedButton.icon(onPressed: (){}, 
+										ElevatedButton.icon(onPressed: ()
+										{
+											ShowCancelOrderDialog(context, orderManagerBloc: widget.orderManagerBloc, itemToCancel: product);
+										}, 
 										icon: const Icon(Icons.do_disturb) ,
 										label: const Text("Cancel")),
 									])

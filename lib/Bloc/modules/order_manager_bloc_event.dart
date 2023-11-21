@@ -9,9 +9,14 @@ class LoadProducts extends OrderManagerBlocEvent
 }
 class AddProduct extends OrderManagerBlocEvent 
 {
-
+	final Product productToAdd;
+	AddProduct({required this.productToAdd});
 }
-
+class UpdateProduct extends OrderManagerBlocEvent
+{
+	final Product productToUpdate;
+	UpdateProduct({required this.productToUpdate});
+}
 class SubmitOrder extends OrderManagerBlocEvent 
 {
 

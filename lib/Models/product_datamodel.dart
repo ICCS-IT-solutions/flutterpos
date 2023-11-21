@@ -73,4 +73,34 @@ class Product
 			"updated_at": updatedAt,
 		};
 	}
+	//Create a copy of the target, allowing for its props to be overridden by new vals.
+	copyWith({	String? productName,
+				String? supplierName, 
+				String? description, 
+				double? price, String? 
+				imageData, 
+				String? category, 
+				int? stockQuantity, 
+				int? onOrder, 
+				int? threshold, 
+				int? shortages, 
+				DateTime? 
+				createdAt, 
+				DateTime? updatedAt})
+	{
+		return Product(
+			productName: productName?? this.productName,
+			supplierName: supplierName?? this.supplierName,
+			description: description?? this.description,
+			price: price?? this.price,
+			imageData: imageData?? this.imageData,
+			category: category?? this.category,
+			stockQuantity: stockQuantity?? this.stockQuantity,
+			onOrder: onOrder?? this.onOrder,
+			threshold: threshold?? this.threshold,
+			shortages: shortages?? this.shortages,
+			createdAt: createdAt?? this.createdAt,
+			updatedAt: updatedAt?? this.updatedAt,
+		);
+	}
 }

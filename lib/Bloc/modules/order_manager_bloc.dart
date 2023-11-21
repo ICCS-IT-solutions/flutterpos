@@ -113,7 +113,8 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 			emit(OrderManagerBlocSuccess(successMsg: "Products loaded successfully.", loadedProducts: products));
 		});
 		on<AddProduct>((event, emit) async
-		{
+		{	
+			await dbHelper.CreateEntry(dbName, tableName, event.productToAdd.toDictionary());
 			final updatedState = await _ExecutePostOpUpdate();
 			emit(updatedState);
 		});
@@ -121,6 +122,12 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 		{
 			await dbHelper.CreateEntry(dbName, tableName, event.currentSupplier.toDictionary());
 			final updatedState = await _ExecuteTargetedPostOpUpdate(dbName: dbName!, tableName: suppliersTableName);
+			emit(updatedState);
+		});
+		on<UpdateProduct>((event, emit) async 
+		{
+			await dbHelper.UpdateEntry(dbName, tableName, event.productToUpdate.toDictionary(), "product_name=?", [event.productToUpdate.productName]);
+			final updatedState = await _ExecutePostOpUpdate();
 			emit(updatedState);
 		});
 	}
