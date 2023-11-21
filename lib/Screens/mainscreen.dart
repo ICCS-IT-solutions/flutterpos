@@ -8,6 +8,7 @@ import "package:flutterpos/Screens/ordermanagerscreen.dart";
 import "../Bloc/modules/order_manager_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
 import "../Bloc/modules/user_bloc.dart";
+import "../Models/user_datamodel.dart";
 import "menuscreen.dart";
 import "usermanagerscreen.dart";
 
@@ -46,14 +47,45 @@ class MainScreen extends StatelessWidget
 						],
 						),
 						actions: [
+							//User manager should not be visible to users without the appropriate rights.
+							//Valid user roles: Administrator, Manager, Supervisor
+							//All others: access denied.
 							ElevatedButton.icon(
 								onPressed: ()
 								{
-									Navigator.of(context).push(
-										MaterialPageRoute(
-											builder: (context) => UserManagementScreen(userBloc: userBloc, userManagerBloc: userManagerBloc),
-										)
-									);
+									if(userBloc.state.user!.userRole == Role.Administrator || userBloc.state.user!.userRole == Role.Manager || userBloc.state.user!.userRole == Role.Supervisor)
+									{
+										Navigator.of(context).push(
+											MaterialPageRoute(
+											builder: (context) 
+												{
+													return UserManagementScreen(userBloc: userBloc, userManagerBloc: userManagerBloc);
+												},
+											)
+										);
+									}
+									else
+									{
+										showDialog(
+											context: context,
+											builder: (context)
+											{
+												return AlertDialog(
+													title: const Text("Access denied"),
+													content: const Text("You do not have the required rights to access this feature."),
+													actions: [
+														TextButton(
+															onPressed: ()
+															{
+																Navigator.of(context).pop();
+															},
+															child: const Text("OK")
+														)
+													]
+												);
+											}
+										);
+									}
 								},
 								icon: const Icon(Icons.settings_applications_outlined),
 								label: const Text("User manager")
