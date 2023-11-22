@@ -14,9 +14,9 @@ class Product
 	final int onOrder;
 	final int threshold;
 	final int shortages; //How many items went missing, and on whose watch did this occur?
-	final DateTime createdAt;
-	final DateTime updatedAt;
-	Product({required this.productName, required this.supplierName, required this.description, required this.price, required this.imageData, required this.category, required this.stockQuantity, required this.onOrder, required this.threshold ,required this.shortages, required this.createdAt, required this.updatedAt});
+	DateTime? createdAt;
+	DateTime? updatedAt;
+	Product({required this.productName, required this.supplierName, required this.description, required this.price, required this.imageData, required this.category, required this.stockQuantity, required this.onOrder, required this.threshold ,required this.shortages, this.createdAt, this.updatedAt});
 
 	factory Product.fromDictionary(Map<String, dynamic> dictionary)
 	{
@@ -69,8 +69,6 @@ class Product
 			"on_order": onOrder,
 			"threshold": threshold,
 			"shortages": shortages,
-			"created_at": createdAt,
-			"updated_at": updatedAt,
 		};
 	}
 	//Create a copy of the target, allowing for its props to be overridden by new vals.
@@ -83,9 +81,7 @@ class Product
 				int? stockQuantity, 
 				int? onOrder, 
 				int? threshold, 
-				int? shortages, 
-				DateTime? createdAt, 
-				DateTime? updatedAt})
+				int? shortages, })
 	{
 		return Product(
 			productName: productName?? this.productName,
@@ -98,8 +94,6 @@ class Product
 			onOrder: onOrder?? this.onOrder,
 			threshold: threshold?? this.threshold,
 			shortages: shortages?? this.shortages,
-			createdAt: createdAt?? this.createdAt,
-			updatedAt: updatedAt?? this.updatedAt,
 		);
 	}
 }
