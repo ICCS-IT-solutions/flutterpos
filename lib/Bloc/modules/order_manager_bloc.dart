@@ -119,16 +119,22 @@ class OrderManagerBloc extends Bloc<OrderManagerBlocEvent, OrderManagerBlocState
 			emit(updatedState);
 		});
 		on<RegisterSupplier>((event, emit) async
-		{
+		{	
+			emit(const OrderManagerBlocLoading(loadingMsg: "Processing request... please be patient."));
 			await dbHelper.CreateEntry(dbName, tableName, event.currentSupplier.toDictionary());
-			final updatedState = await _ExecuteTargetedPostOpUpdate(dbName: dbName!, tableName: suppliersTableName);
-			emit(updatedState);
+			final productsData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+			final products =  productsData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
+			emit (OrderManagerBlocSuccess(loadedProducts: products, successMsg: "Supplier registered successfully."));
 		});
 		on<UpdateProduct>((event, emit) async 
 		{
+			//Needs additional tweaks to support incremental order updates. 
+			//Currently, the entire order is replaced in the table.
+			emit(const OrderManagerBlocLoading(loadingMsg: "Processing order... please be patient."));
 			await dbHelper.UpdateEntry(dbName, tableName, event.productToUpdate.toDictionary(), "product_name=?", [event.productToUpdate.productName]);
-			final updatedState = await _ExecutePostOpUpdate();
-			emit(updatedState);
+			final productsData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+			final products =  productsData?.map((item) => Product.fromDictionary(item)).toList() ?? [];
+			emit (OrderManagerBlocSuccess(loadedProducts: products, successMsg: "New order registered successfully."));
 		});
 	}
 }

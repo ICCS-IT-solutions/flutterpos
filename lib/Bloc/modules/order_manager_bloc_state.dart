@@ -25,7 +25,7 @@ final class OrderManagerBlocInitial extends OrderManagerBlocState
 class OrderManagerBlocSuccess extends OrderManagerBlocState 
 {	
 	final String successMsg;
-  	final List<Product> loadedProducts;
+  	final List<Product>? loadedProducts;
   	final Product? currentProduct;
 	const OrderManagerBlocSuccess({required this.successMsg, required this.loadedProducts, this.currentProduct}) : super(products: loadedProducts, product: currentProduct, IsLoading: false, IsSuccessful: true, IsFailure: false, response: successMsg);
 }
