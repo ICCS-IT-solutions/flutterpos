@@ -1,5 +1,8 @@
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 
@@ -16,6 +19,54 @@ class ProductManagementScreen extends StatefulWidget
 
 class _ProductManagementScreenState extends State<ProductManagementScreen>
 {
+	@override 
+	void initState()
+	{
+		super.initState();
+		widget.productManagementBloc.add(LoadProducts(products: const []));
+	}
+	
+	Widget BuildProductsList(BuildContext context)
+	{
+		//Use a blocbuilder here.
+		return BlocBuilder<ProductManagementBloc, ProductManagementBlocState>(
+			builder: (context, state)
+			{
+				if (state is ProductManagementBlocSuccess)
+				{
+					//Datatable is good, but i want something where the rows can be selected.
+					return DataTable(
+						columns: const [
+							DataColumn(label: Text("Product ID")),
+							DataColumn(label: Text("Product name")),
+							DataColumn(label: Text("Category")),
+							DataColumn(label: Text("Price")),
+							DataColumn(label: Text("Quantity")),
+							DataColumn(label: Text("Date registered")),
+						],
+						rows: state.products!.map((product)
+						{
+							return DataRow(
+								cells: [
+									DataCell(Text(product.product_id.toString())),
+									DataCell(Text(product.productName)),
+									DataCell(Text(product.category)),
+									DataCell(Text(product.price.toString())),
+									DataCell(Text(product.stockQuantity.toString())),
+									DataCell(Text(product.createdAt.toString())),
+								]
+							);
+						}).toList()
+					);
+				}
+				else
+				{
+					return const Center(child: Text("No products found."));
+				}
+			}
+		);
+	}
+
 	@override
 	Widget build(BuildContext context)
 	{
@@ -36,7 +87,7 @@ class _ProductManagementScreenState extends State<ProductManagementScreen>
 				),
 			],
 			),
-			body: const Center(child: Text("Placeholder for products list.")),
+			body: BuildProductsList(context),
 		);
 	}
 }

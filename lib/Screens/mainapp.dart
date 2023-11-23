@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import "package:flutterpos/Bloc/modules/config_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 
@@ -32,6 +33,7 @@ class MainApp extends StatelessWidget
 	final InventorymanagementBloc inventoryManagementBloc;
 	final SupplierManagementBloc supplierManagementBloc;
 	final ProductManagementBloc productManagementBloc;
+	final ShortageManagementBloc shortageManagementBloc;
 
 	const MainApp({required this.userManagerBloc, 
 	required this.orderManagerBloc, 
@@ -42,6 +44,7 @@ class MainApp extends StatelessWidget
 	required this.inventoryManagementBloc,
 	required this.supplierManagementBloc,
 	required this.productManagementBloc,
+	required this.shortageManagementBloc,
 	super.key});
 	
 	Future<File?> initConfigFile() async
@@ -95,7 +98,8 @@ class MainApp extends StatelessWidget
 							userBloc: userBloc,
 							inventoryManagementBloc: inventoryManagementBloc,
 							supplierManagementBloc: supplierManagementBloc,
-							productManagementBloc: productManagementBloc);
+							productManagementBloc: productManagementBloc,
+							shortageManagementBloc: shortageManagementBloc);
 						}
 						else
 						{

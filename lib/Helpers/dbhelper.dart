@@ -208,8 +208,9 @@ class MysqlDbHelper implements BaseDbHelper
 /// Returns:
 ///   The `CreateEntry` method does not have a return type specified, so it is returning `void`.
 
+/// Status codes that will be used: 0: normal return. 1: entry already exists. 2: error
   @override
-  Future<void> CreateEntry(String? dbName, String? tableName, Map<String, dynamic> values) async
+  Future<int> CreateEntry(String? dbName, String? tableName, Map<String, dynamic> values) async
   {
     var conn = await CreateConnection(configFile!);
     try
@@ -235,12 +236,21 @@ class MysqlDbHelper implements BaseDbHelper
       if(!await CheckEntryExists(dbName: dbName, tableName: tableName, whereField: values.keys.first, whereValue: values.values.first))
       {
         await conn!.query("INSERT INTO $dbName.$tableName (${values.keys.join(",")}) VALUES ($stringValues)");
+		await conn.close();
+		return 0;
       }
-      await conn!.close();
+	  else
+	  {
+		logger.i("Entry already present");
+		await conn?.close();
+		return 1;
+	  }
+      
     }
     catch(ex)
     {
       logger.e("Something went wrong while trying to create an entry: $ex");
+	  return 2;
     }
     finally
     {
@@ -271,8 +281,9 @@ class MysqlDbHelper implements BaseDbHelper
  /// Returns:
  ///   The method `UpdateEntry` is returning a `Future<void>`, which means it is not returning any
  /// value.
+ /// Status codes that will be used: 0: normal return. 1: could not update entry. 2: error
   @override
-  Future<void> UpdateEntry(String? dbName, String? tableName, Map<String, dynamic> values, String? whereClause, List<dynamic>? whereArgs) async
+  Future<int> UpdateEntry(String? dbName, String? tableName, Map<String, dynamic> values, String? whereClause, List<dynamic>? whereArgs) async
   {
     var conn = await CreateConnection(configFile!);
     try
@@ -299,12 +310,25 @@ class MysqlDbHelper implements BaseDbHelper
         return "${entry.key} = ?";  
       }).join(",");
       final updateClause = "UPDATE $dbName.$tableName SET $updateValues WHERE $whereClause";
-      await conn!.query(updateClause,[...stringValues, ...whereArgs!]);
-      await conn.close();
+      final result = await conn!.query(updateClause,[...stringValues, ...whereArgs!]);
+	  if(result.isNotEmpty)
+	  {
+		logger.i("Entry updated successfully");
+		await conn.close();
+		return 0;
+	  }
+	  else
+	  {
+		logger.i("Entry not updated");
+		await conn.close();
+		return 1;
+	  }
     }
     catch(ex)
     {
       logger.e("Something went wrong while trying to update an entry: $ex");
+	  await conn?.close();
+	  return 2;
     }
     finally
     {
@@ -330,28 +354,41 @@ class MysqlDbHelper implements BaseDbHelper
 ///   whereArgs (List<dynamic>): The `whereArgs` parameter is a list of dynamic values that will be used
 /// to replace the placeholders in the `whereClause`. These values are typically used to filter the rows
 /// that will be deleted from the specified table.
+/// Status codes that will be used: 0: normal return. 1: entry not found. 2: error
   @override
-  Future<void> DeleteEntry(String? dbName, String? tableName, String? whereClause, List<dynamic>? whereArgs) async
+  Future<int> DeleteEntry(String? dbName, String? tableName, String? whereClause, List<dynamic>? whereArgs) async
   {
     var conn = await CreateConnection(configFile!);
     try
     {
-      await conn!.query("DELETE FROM $dbName.$tableName WHERE $whereClause", whereArgs);
-      await conn.close();
+    	final result = await conn!.query("DELETE FROM $dbName.$tableName WHERE $whereClause", whereArgs);
+		if(result.isNotEmpty)
+		{
+			logger.i("Entry deleted successfully");
+			await conn.close();
+			return 0;
+		}
+		else
+		{
+			logger.i("Entry not deleted");
+			await conn.close();
+			return 1;
+		}
     }
     catch(ex)
     {
-      logger.e("Something went wrong while trying to delete an entry: $ex");
-    }
-    finally
-    {
-      //Close the connection:
-      if(conn != null)
-      {
-        await conn.close();
-      }
-    }
-  }
+		logger.e("Something went wrong while trying to delete an entry: $ex");
+		return 2;
+	}
+		finally
+		{
+		//Close the connection:
+			if(conn != null)
+			{
+				await conn.close();
+			}
+		}
+	}
 
   /// The function `ReadEntries` reads entries from a database table based on the provided parameters
   /// and returns a list of maps representing the entries.
@@ -372,6 +409,7 @@ class MysqlDbHelper implements BaseDbHelper
   /// Returns:
   ///   The method `ReadEntries` returns a `Future` that resolves to a `List` of `Map<String, dynamic>`
   /// or `null`.
+  /// The null return can therefore be interpreted as an error condition.
   @override 
   Future<List<Map<String, dynamic>>?> ReadEntries(String? dbName, String? tableName, String? whereClause, List<dynamic>? whereArgs) async
   {
@@ -431,6 +469,7 @@ class MysqlDbHelper implements BaseDbHelper
   /// Returns:
   ///   The method `ReadSingleEntry` returns a `Future` that resolves to a `Map<String, dynamic>?` or
   /// `null`.
+  /// The null return can therefore be interpreted as an error condition.
   @override 
   Future<Map<String,dynamic>?>? ReadSingleEntry(String? dbName, String? tableName, String? whereClause, List<dynamic>? whereArgs) async
   {

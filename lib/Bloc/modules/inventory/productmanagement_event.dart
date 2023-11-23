@@ -6,23 +6,23 @@ sealed class ProductManagementBlocEvent {}
 class LoadProducts extends ProductManagementBlocEvent 
 {
 	final List<Product> products;
-	LoadProducts(this.products);
+	LoadProducts({required this.products});
 }
 
 class AddProduct extends ProductManagementBlocEvent 
 {
 	final Product product;
-	AddProduct(this.product);
+	AddProduct({required this.product});
 }
 
 class UpdateProduct extends ProductManagementBlocEvent
 {
 	final Product product;
-	UpdateProduct(this.product);
+	UpdateProduct({required this.product});
 }
 
 class RemoveProduct extends ProductManagementBlocEvent
 {
 	final Product product;
-	RemoveProduct(this.product);
+	RemoveProduct({required this.product});
 }

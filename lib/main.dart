@@ -8,6 +8,7 @@ import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
+import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
 import 'package:flutterpos/Screens/mainapp.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:theme_provider/theme_provider.dart';
@@ -68,10 +69,11 @@ void main()
 	final MainAppBloc mainAppBloc = MainAppBloc();
 	final MenuBloc menuBloc = MenuBloc(configBloc: configBloc);
 	final UserManagerBloc userManagerBloc = UserManagerBloc(configBloc: configBloc);
+
+	//Inventory, shortages, suppliers and orders:
 	final OrderManagerBloc orderManagerBloc = OrderManagerBloc(configBloc: configBloc);
 	final ProductManagementBloc productManagementBloc = ProductManagementBloc(configBloc: configBloc);
-
-	//Why is this causing an issue? It should not since I am only using the same param not recreating it!
+	final ShortageManagementBloc shortageManagementBloc = ShortageManagementBloc(configBloc: configBloc);
 	final InventorymanagementBloc inventorymanagementBloc = InventorymanagementBloc(configBloc: configBloc);
 	final SupplierManagementBloc supplierManagementBloc = SupplierManagementBloc(configBloc: configBloc);
 
@@ -87,7 +89,8 @@ void main()
 		mainAppBlocInstance: mainAppBloc,
 		inventoryManagementBlocInstance: inventorymanagementBloc,
 		supplierManagementBlocInstance: supplierManagementBloc,
-		productManagementBlocInstance: productManagementBloc),
+		productManagementBlocInstance: productManagementBloc,
+		shortageManagementBlocInstance: shortageManagementBloc),
 		)
 	);
 }
@@ -106,6 +109,7 @@ class MyApp extends StatelessWidget
 	final InventorymanagementBloc inventoryManagementBlocInstance;
 	final SupplierManagementBloc supplierManagementBlocInstance;
 	final ProductManagementBloc productManagementBlocInstance;
+	final ShortageManagementBloc shortageManagementBlocInstance;
 
 	const MyApp({required this.userManagerBlocInstance ,
 	required this.orderManagerBlocInstance, 
@@ -116,6 +120,7 @@ class MyApp extends StatelessWidget
 	required this.inventoryManagementBlocInstance,
 	required this.supplierManagementBlocInstance,
 	required this.productManagementBlocInstance,
+	required this.shortageManagementBlocInstance,
 	super.key});
 
 	@override
@@ -150,6 +155,9 @@ class MyApp extends StatelessWidget
 				BlocProvider(
 					create: (context) => productManagementBlocInstance,
 				),
+				BlocProvider(
+					create: (context) => shortageManagementBlocInstance,
+				)
 			],
 			child: ThemeConsumer(
 				child: Builder(
@@ -165,7 +173,8 @@ class MyApp extends StatelessWidget
 							mainAppBloc: mainAppBlocInstance,
 							inventoryManagementBloc: inventoryManagementBlocInstance,
 							supplierManagementBloc: supplierManagementBlocInstance,
-							productManagementBloc: productManagementBlocInstance,),
+							productManagementBloc: productManagementBlocInstance,
+							shortageManagementBloc: shortageManagementBlocInstance,),
 						);
 					}
 				)

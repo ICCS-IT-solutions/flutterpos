@@ -1,9 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
 import 'package:flutterpos/Screens/inventory/productmanagement.dart';
 import 'package:flutterpos/Screens/inventory/suppliermanagement.dart';
+import 'package:flutterpos/Screens/inventory/shortagemanagement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,6 +28,7 @@ class InventoryManagementScreen extends StatefulWidget
 	final InventorymanagementBloc inventoryManagementBloc;
 	final SupplierManagementBloc supplierManagementBloc;
 	final ProductManagementBloc productManagementBloc;
+	final ShortageManagementBloc shortageManagementBloc;
 	final UserBloc userBloc;
 	//Need to keep track of the currently logged-in user 
 	
@@ -34,6 +37,7 @@ class InventoryManagementScreen extends StatefulWidget
 	required this.inventoryManagementBloc, 
 	required this.supplierManagementBloc,
 	required this.productManagementBloc,
+	required this.shortageManagementBloc,
 	super.key});
 
 	@override
@@ -91,12 +95,25 @@ class _InventoryManagementScreenState extends State<InventoryManagementScreen>
 							})
 						);
 					}, 
-					child: const Text("Manage suppliers"))
+					child: const Text("Manage suppliers")),
+					ElevatedButton(
+						onPressed:()
+						{
+							Navigator.of(context).push(
+								MaterialPageRoute(builder: (context)
+								{
+									return ShortageManagementScreen(userBloc: widget.userBloc, shortageManagementBloc: widget.shortageManagementBloc,);
+								})
+							);
+						},
+						child: const Text("Manage shortages"),
+					)
 				],
 			),
 			body: BuildProductsList(context)
 		);		
 	}
+	//Turn this into an overview type list, which should show at a glance what the current inventory state looks like.
 	Widget BuildProductsList(BuildContext context)
 	{	
 		//Size = missing? WTFH? Infer it from the parent, NEVER assume infinity or null!

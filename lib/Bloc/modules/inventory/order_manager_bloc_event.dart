@@ -3,32 +3,24 @@ part of 'order_manager_bloc.dart';
 @immutable
 sealed class OrderManagerBlocEvent {}
 
-class LoadProducts extends OrderManagerBlocEvent 
+class LoadOrders extends OrderManagerBlocEvent 
 {
-	//This event class is responsible for holding the products list to be used in the UI
+	final List<Order> orders;
+	LoadOrders({required this.orders});
 }
-class AddProduct extends OrderManagerBlocEvent 
+class AddOrder extends OrderManagerBlocEvent 
 {
-	final Product productToAdd;
-	AddProduct({required this.productToAdd});
+	final Order newOrder;
+	AddOrder({required this.newOrder});
 }
-class UpdateProduct extends OrderManagerBlocEvent
+class UpdateOrder extends OrderManagerBlocEvent
 {
-	final Product productToUpdate;
-	UpdateProduct({required this.productToUpdate});
-}
-class SubmitOrder extends OrderManagerBlocEvent 
-{
-
-}
-class RegisterSupplier extends OrderManagerBlocEvent 
-{
-	final Supplier currentSupplier;
-	RegisterSupplier({required this.currentSupplier});
+	final Order orderToUpdate;
+	UpdateOrder({required this.orderToUpdate});
 }
 
-class LoadSuppliers extends OrderManagerBlocEvent 
+class RemoveOrder extends OrderManagerBlocEvent
 {
-	final List<Supplier> suppliers;
-	LoadSuppliers({required this.suppliers});
+	final Order orderToRemove;
+	RemoveOrder({required this.orderToRemove});
 }

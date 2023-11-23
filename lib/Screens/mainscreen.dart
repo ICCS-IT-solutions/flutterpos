@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 import "package:flutterpos/Screens/inventory/inventorymanagement.dart";
@@ -24,6 +25,7 @@ class MainScreen extends StatelessWidget
 	final InventorymanagementBloc inventoryManagementBloc;
 	final SupplierManagementBloc supplierManagementBloc;
 	final ProductManagementBloc productManagementBloc;
+	final ShortageManagementBloc shortageManagementBloc;
 	//Add the instances and params for the other blocs as needed, also so they can be passed to the other screen classes when instantiated, thus managing them from a central loc rather than all over the place...
 	//As again, in my code files, I rule, therefore I decide the style rules :P
 	//One most important rule: No stair-stepped curly brackets, line them up vertically. 
@@ -35,6 +37,7 @@ class MainScreen extends StatelessWidget
 	required this.inventoryManagementBloc,
 	required this.supplierManagementBloc,
 	required this.productManagementBloc,
+	required this.shortageManagementBloc,
 	super.key});
 
 	@override
@@ -124,7 +127,8 @@ class MainScreen extends StatelessWidget
 												supplierManagementBloc: supplierManagementBloc,
 												orderManagerBloc: orderManagerBloc, 
 												inventoryManagementBloc:inventoryManagementBloc,
-												productManagementBloc: productManagementBloc);
+												productManagementBloc: productManagementBloc,
+												shortageManagementBloc: shortageManagementBloc);
 											}
 										)
 									);

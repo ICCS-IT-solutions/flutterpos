@@ -5,39 +5,30 @@ part of 'order_manager_bloc.dart';
 @immutable
 class OrderManagerBlocState 
 {
-	final List<Product>? products;
-	final List<Supplier>? suppliers;
-	final Product? product;
-	final Supplier? supplier;
-	final bool IsLoading;
-	final bool IsSuccessful;
-	final bool IsFailure;
-	final String response;
+	final List<Order>? orders;
+	final Order? order;
+	final bool isLoading;
+	final String message;
 
-	const OrderManagerBlocState({this.products, this.suppliers, this.supplier, this.product, required this.IsLoading, required this.IsSuccessful, required this.IsFailure, required this.response});
+	const OrderManagerBlocState({required this.orders, required this.order, required this.isLoading, required this.message});
 }
 
-final class OrderManagerBlocInitial extends OrderManagerBlocState 
+class OrderManagerBlocInitial extends OrderManagerBlocState
 {
-	const OrderManagerBlocInitial() : super(products: const [], product: null, IsLoading: false, IsSuccessful: false, IsFailure: false, response: "");
+	const OrderManagerBlocInitial(): super(orders: null, order: null, isLoading: false, message: '');
 }
 
-class OrderManagerBlocSuccess extends OrderManagerBlocState 
-{	
-	final String successMsg;
-  	final List<Product>? loadedProducts;
-  	final Product? currentProduct;
-	const OrderManagerBlocSuccess({required this.successMsg, required this.loadedProducts, this.currentProduct}) : super(products: loadedProducts, product: currentProduct, IsLoading: false, IsSuccessful: true, IsFailure: false, response: successMsg);
-}
-
-class OrderManagerBlocLoading extends OrderManagerBlocState 
+class OrderManagerBlocLoading extends OrderManagerBlocState
 {
-	final String loadingMsg;
-	const OrderManagerBlocLoading({required this.loadingMsg}) : super(products: const [], product: null, IsLoading: true, IsSuccessful: false, IsFailure: false, response: loadingMsg);
+	const OrderManagerBlocLoading(): super(orders: null, order: null, isLoading: true, message: 'Orders loading...');
 }
 
-class OrderManagerBlocFailed extends OrderManagerBlocState 
-{	
-	final String errorMsg;
-	const OrderManagerBlocFailed(String s, {required this.errorMsg}) : super(products: const [], product: null, IsLoading: false, IsSuccessful: false, IsFailure: true, response: errorMsg);
+class OrderManagerBlocSuccess extends OrderManagerBlocState
+{
+	const OrderManagerBlocSuccess({required super.order, required super.orders}) : super(isLoading: false, message: 'Orders loaded successfully.');
+}
+
+class OrderManagerBlocFailure extends OrderManagerBlocState
+{
+	const OrderManagerBlocFailure(): super(orders: null, order: null, isLoading: false, message: 'Orders failed to load.');
 }
