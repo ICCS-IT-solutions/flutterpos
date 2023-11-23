@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutterpos/Bloc/main_app_bloc.dart';
 import 'package:flutterpos/Bloc/modules/config_bloc.dart';
-import 'package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
-import 'package:flutterpos/Bloc/modules/order_manager_bloc.dart';
-import 'package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
 import 'package:flutterpos/Screens/mainapp.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:theme_provider/theme_provider.dart';
@@ -62,26 +63,31 @@ List<AppTheme> appThemes = [
 void main() 
 {
 //Instance these here:
-	final UserBloc userBloc = UserBloc(configBloc: ConfigBloc());
 	final ConfigBloc configBloc = ConfigBloc();
+	final UserBloc userBloc = UserBloc(configBloc: configBloc);
 	final MainAppBloc mainAppBloc = MainAppBloc();
-	final MenuBloc menuBloc = MenuBloc(configBloc: ConfigBloc());
-	final UserManagerBloc userManagerBloc = UserManagerBloc(configBloc: ConfigBloc());
-	final OrderManagerBloc orderManagerBloc = OrderManagerBloc(configBloc: ConfigBloc());
-	final InventorymanagementBloc inventorymanagementBloc = InventorymanagementBloc(configBloc: ConfigBloc());
-	final SupplierManagementBloc supplierManagementBloc = SupplierManagementBloc(configBloc: ConfigBloc());
+	final MenuBloc menuBloc = MenuBloc(configBloc: configBloc);
+	final UserManagerBloc userManagerBloc = UserManagerBloc(configBloc: configBloc);
+	final OrderManagerBloc orderManagerBloc = OrderManagerBloc(configBloc: configBloc);
+	final ProductManagementBloc productManagementBloc = ProductManagementBloc(configBloc: configBloc);
+
+	//Why is this causing an issue? It should not since I am only using the same param not recreating it!
+	final InventorymanagementBloc inventorymanagementBloc = InventorymanagementBloc(configBloc: configBloc);
+	final SupplierManagementBloc supplierManagementBloc = SupplierManagementBloc(configBloc: configBloc);
+
 	runApp(ThemeProvider(
 		themes: appThemes,
 		saveThemesOnChange: true,
 		loadThemeOnInit: true,
-		child: MyApp(userManagerBlocInstance: userManagerBloc, 
-		orderManagerBlocInstance: orderManagerBloc, 
-		menuBlocInstance: menuBloc, 
-		userBlocInstance: userBloc, 
+		child: MyApp(userManagerBlocInstance: userManagerBloc,
+		orderManagerBlocInstance: orderManagerBloc,
+		menuBlocInstance: menuBloc,
+		userBlocInstance: userBloc,
 		configBlocInstance: configBloc,
 		mainAppBlocInstance: mainAppBloc,
 		inventoryManagementBlocInstance: inventorymanagementBloc,
-		supplierManagementBlocInstance: supplierManagementBloc),
+		supplierManagementBlocInstance: supplierManagementBloc,
+		productManagementBlocInstance: productManagementBloc),
 		)
 	);
 }
@@ -99,6 +105,7 @@ class MyApp extends StatelessWidget
 	final UserManagerBloc userManagerBlocInstance;
 	final InventorymanagementBloc inventoryManagementBlocInstance;
 	final SupplierManagementBloc supplierManagementBlocInstance;
+	final ProductManagementBloc productManagementBlocInstance;
 
 	const MyApp({required this.userManagerBlocInstance ,
 	required this.orderManagerBlocInstance, 
@@ -108,6 +115,7 @@ class MyApp extends StatelessWidget
 	required this.mainAppBlocInstance, 
 	required this.inventoryManagementBlocInstance,
 	required this.supplierManagementBlocInstance,
+	required this.productManagementBlocInstance,
 	super.key});
 
 	@override
@@ -138,7 +146,10 @@ class MyApp extends StatelessWidget
 				),
 				BlocProvider(
 					create: (context) => supplierManagementBlocInstance,
-				)
+				),
+				BlocProvider(
+					create: (context) => productManagementBlocInstance,
+				),
 			],
 			child: ThemeConsumer(
 				child: Builder(
@@ -153,7 +164,8 @@ class MyApp extends StatelessWidget
 							configBloc: configBlocInstance, 
 							mainAppBloc: mainAppBlocInstance,
 							inventoryManagementBloc: inventoryManagementBlocInstance,
-							supplierManagementBloc: supplierManagementBlocInstance,),
+							supplierManagementBloc: supplierManagementBlocInstance,
+							productManagementBloc: productManagementBlocInstance,),
 						);
 					}
 				)

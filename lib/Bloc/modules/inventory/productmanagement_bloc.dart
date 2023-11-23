@@ -1,23 +1,27 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterpos/Models/supplier_datamodel.dart';
-import 'package:logger/logger.dart';
-import 'package:meta/meta.dart';
+// ignore_for_file: non_constant_identifier_names
 
-import '../../Helpers/dbhelper.dart';
-import 'config_bloc.dart';
 import 'dart:convert';
 import 'dart:io';
 
-part 'suppliermanagement_event.dart';
-part 'suppliermanagement_state.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutterpos/Models/product_datamodel.dart';
+import 'package:logger/logger.dart';
+import 'package:meta/meta.dart';
 
-class SupplierManagementBloc extends Bloc<SupplierManagementBlocEvent, SupplierManagementBlocState>
+import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+
+part "productmanagement_event.dart";
+part "productmanagement_state.dart";
+
+class ProductManagementBloc extends Bloc<ProductManagementBlocEvent, ProductManagementBlocState> 
 {
 	Logger logger = Logger();
 	final ConfigBloc configBloc;
 	String? dbName;
-	final String tableName = "suppliers";
+	final String tableName = "products";
 	late MysqlDbHelper dbHelper;
+
 	Future<MysqlDbHelper?> initDbHelper() async
 	{
 		try
@@ -44,12 +48,10 @@ class SupplierManagementBloc extends Bloc<SupplierManagementBlocEvent, SupplierM
 	{
 		dbHelper = await initDbHelper() ?? MysqlDbHelper();
 	}
-
 	Future<void> _initDatabaseName() async
 	{
 		dbName = await RetrieveDatabaseName();
 	}
-
 	Future<String?> RetrieveDatabaseName() async
 	{
 		try
@@ -72,18 +74,9 @@ class SupplierManagementBloc extends Bloc<SupplierManagementBlocEvent, SupplierM
 			return null;
 		}
 	}
-
-	SupplierManagementBloc({required this.configBloc}) : super(SupplierManagementBlocInitial()) 
+	ProductManagementBloc({required this.configBloc}) :super (ProductManagementBlocInitial())
 	{
 		_initDbHelper();
 		_initDatabaseName();
-
-		on<LoadSuppliers>((event, emit) async
-		{
-			emit(SupplierManagementBlocLoading());
-			final suppliersData = await dbHelper.ReadEntries(dbName, tableName, null, null);
-			final suppliers = suppliersData?.map((item) => Supplier.fromDictionary(item)).toList() ?? [];
-			emit(SupplierManagementBlocSuccess(suppliers: suppliers, supplier: null));
-		});
 	}
 }

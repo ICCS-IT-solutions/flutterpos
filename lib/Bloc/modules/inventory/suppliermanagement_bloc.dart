@@ -1,26 +1,26 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutterpos/Models/inventoryitem_datamodel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterpos/Models/supplier_datamodel.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import '../../Helpers/dbhelper.dart';
-import 'config_bloc.dart';
+import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'dart:convert';
+import 'dart:io';
 
-part 'inventorymanagement_event.dart';
-part 'inventorymanagement_state.dart';
+part 'suppliermanagement_event.dart';
+part 'suppliermanagement_state.dart';
 
-class InventorymanagementBloc extends Bloc<InventorymanagementBlocEvent, InventorymanagementBlocState>
+class SupplierManagementBloc extends Bloc<SupplierManagementBlocEvent, SupplierManagementBlocState>
 {
 	Logger logger = Logger();
 	final ConfigBloc configBloc;
 	String? dbName;
-	final String tableName = "inventory";
+	final String tableName = "suppliers";
 	late MysqlDbHelper dbHelper;
+	
 	Future<MysqlDbHelper?> initDbHelper() async
 	{
 		try
@@ -47,10 +47,12 @@ class InventorymanagementBloc extends Bloc<InventorymanagementBlocEvent, Invento
 	{
 		dbHelper = await initDbHelper() ?? MysqlDbHelper();
 	}
+
 	Future<void> _initDatabaseName() async
 	{
 		dbName = await RetrieveDatabaseName();
 	}
+
 	Future<String?> RetrieveDatabaseName() async
 	{
 		try
@@ -72,19 +74,19 @@ class InventorymanagementBloc extends Bloc<InventorymanagementBlocEvent, Invento
 			logger.e("Something went wrong while trying to retrieve the database name: $ex");
 			return null;
 		}
-	}	
-	
-	InventorymanagementBloc({required this.configBloc}) : super(InventorymanagementInitial()) 
+	}
+
+	SupplierManagementBloc({required this.configBloc}) : super(SupplierManagementBlocInitial()) 
 	{
 		_initDbHelper();
 		_initDatabaseName();
 
-		on<LoadInventory>((event, emit) async
+		on<LoadSuppliers>((event, emit) async
 		{
-			emit(InventorymanagementLoading());
-			final inventoryItemData = await dbHelper.ReadEntries(dbName, tableName, null, null);
-			final inventoryItems = inventoryItemData?.map((item) => InventoryItem.fromDictionary(item)).toList() ?? [];
-			emit(InventorymanagementSuccess(inventory: inventoryItems, inventoryItem: null));
+			emit(SupplierManagementBlocLoading());
+			final suppliersData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+			final suppliers = suppliersData?.map((item) => Supplier.fromDictionary(item)).toList() ?? [];
+			emit(SupplierManagementBlocSuccess(suppliers: suppliers, supplier: null));
 		});
 	}
 }

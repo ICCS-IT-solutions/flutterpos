@@ -1,12 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
-import 'package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart';
-import 'package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart';
-import 'package:flutterpos/Screens/suppliermanagement.dart';
+import 'package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
+import 'package:flutterpos/Screens/inventory/productmanagement.dart';
+import 'package:flutterpos/Screens/inventory/suppliermanagement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Bloc/modules/order_manager_bloc.dart';
-import '../Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 import 'ordermanagement.dart';
 
 //Immediate objective for the inventory management aspect: Create a dashboard type interface to serve as an overview of products, inventory, orders and suppliers
@@ -23,6 +25,7 @@ class InventoryManagementScreen extends StatefulWidget
 	final OrderManagerBloc orderManagerBloc;
 	final InventorymanagementBloc inventoryManagementBloc;
 	final SupplierManagementBloc supplierManagementBloc;
+	final ProductManagementBloc productManagementBloc;
 	final UserBloc userBloc;
 	//Need to keep track of the currently logged-in user 
 	
@@ -30,6 +33,7 @@ class InventoryManagementScreen extends StatefulWidget
 	required this.orderManagerBloc, 
 	required this.inventoryManagementBloc, 
 	required this.supplierManagementBloc,
+	required this.productManagementBloc,
 	super.key});
 
 	@override
@@ -42,7 +46,7 @@ class _InventoryManagementScreenState extends State<InventoryManagementScreen>
 	void initState()
 	{
 		super.initState();
-		widget.inventoryManagementBloc.add(LoadInventory(inventory:[]));
+		widget.inventoryManagementBloc.add(LoadInventory(inventory:const []));
 	}
 
 	
@@ -52,7 +56,7 @@ class _InventoryManagementScreenState extends State<InventoryManagementScreen>
 		//Need to build a list of stock items returned from the database -> products table.
 		return Scaffold(
 			appBar: AppBar(
-				title: const Text("Inventory management"),
+				title: const Text("Inventory Management"),
 				actions: [
 					ElevatedButton(
 						onPressed: ()
@@ -68,7 +72,13 @@ class _InventoryManagementScreenState extends State<InventoryManagementScreen>
 					),
 					ElevatedButton(onPressed: ()
 					{
-						
+						Navigator.of(context).push(
+							MaterialPageRoute(builder: (context)
+							{	
+								//Build out this module still
+								return ProductManagementScreen(userBloc: widget.userBloc, productManagementBloc: widget.productManagementBloc);
+							})
+						);
 					}, 
 					child: const Text("Manage products")),
 					//Register a new supplier

@@ -6,13 +6,14 @@ import "dart:io";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:flutter/material.dart';
 import "package:flutterpos/Bloc/modules/config_bloc.dart";
-import "package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 
 import "../Bloc/main_app_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
-import '../Bloc/modules/order_manager_bloc.dart';
+import '../Bloc/modules/inventory/order_manager_bloc.dart';
 import "../Bloc/modules/user_bloc.dart";
 
 import "loginscreen.dart";
@@ -30,7 +31,8 @@ class MainApp extends StatelessWidget
 	final MenuBloc menuBloc;
 	final InventorymanagementBloc inventoryManagementBloc;
 	final SupplierManagementBloc supplierManagementBloc;
-	
+	final ProductManagementBloc productManagementBloc;
+
 	const MainApp({required this.userManagerBloc, 
 	required this.orderManagerBloc, 
 	required this.menuBloc, 
@@ -39,6 +41,7 @@ class MainApp extends StatelessWidget
 	required this.mainAppBloc,
 	required this.inventoryManagementBloc,
 	required this.supplierManagementBloc,
+	required this.productManagementBloc,
 	super.key});
 	
 	Future<File?> initConfigFile() async
@@ -91,7 +94,8 @@ class MainApp extends StatelessWidget
 							menuBloc: menuBloc,	
 							userBloc: userBloc,
 							inventoryManagementBloc: inventoryManagementBloc,
-							supplierManagementBloc: supplierManagementBloc,);
+							supplierManagementBloc: supplierManagementBloc,
+							productManagementBloc: productManagementBloc);
 						}
 						else
 						{

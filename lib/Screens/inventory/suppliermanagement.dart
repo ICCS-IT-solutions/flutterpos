@@ -2,8 +2,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart';
-import '../Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 
 class SupplierManagementScreen extends StatefulWidget
 {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterpos/Bloc/modules/order_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 
 class OrderManagementScreen extends StatefulWidget
