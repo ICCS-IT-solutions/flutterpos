@@ -6,6 +6,8 @@ import "dart:io";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:flutter/material.dart';
 import "package:flutterpos/Bloc/modules/config_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
 
 import "../Bloc/main_app_bloc.dart";
@@ -26,7 +28,18 @@ class MainApp extends StatelessWidget
 	final OrderManagerBloc orderManagerBloc;
 	final UserManagerBloc userManagerBloc;
 	final MenuBloc menuBloc;
-	const MainApp({required this.userManagerBloc, required this.orderManagerBloc, required this.menuBloc, required this.userBloc, required this.configBloc, required this.mainAppBloc, super.key});
+	final InventorymanagementBloc inventoryManagementBloc;
+	final SupplierManagementBloc supplierManagementBloc;
+	
+	const MainApp({required this.userManagerBloc, 
+	required this.orderManagerBloc, 
+	required this.menuBloc, 
+	required this.userBloc, 
+	required this.configBloc, 
+	required this.mainAppBloc,
+	required this.inventoryManagementBloc,
+	required this.supplierManagementBloc,
+	super.key});
 	
 	Future<File?> initConfigFile() async
 	{
@@ -73,7 +86,12 @@ class MainApp extends StatelessWidget
 					{
 						if(state is AuthenticationSuccess && state.isAuthenticated)
 						{
-						return MainScreen(userManagerBloc: userManagerBloc,orderManagerBloc: orderManagerBloc,menuBloc: menuBloc,userBloc: userBloc);
+						return MainScreen(userManagerBloc: userManagerBloc,
+							orderManagerBloc: orderManagerBloc,
+							menuBloc: menuBloc,	
+							userBloc: userBloc,
+							inventoryManagementBloc: inventoryManagementBloc,
+							supplierManagementBloc: supplierManagementBloc,);
 						}
 						else
 						{

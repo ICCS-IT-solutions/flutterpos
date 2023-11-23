@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutterpos/Bloc/main_app_bloc.dart';
 import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
 import 'package:flutterpos/Bloc/modules/order_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
 import 'package:flutterpos/Screens/mainapp.dart';
@@ -66,11 +68,20 @@ void main()
 	final MenuBloc menuBloc = MenuBloc(configBloc: ConfigBloc());
 	final UserManagerBloc userManagerBloc = UserManagerBloc(configBloc: ConfigBloc());
 	final OrderManagerBloc orderManagerBloc = OrderManagerBloc(configBloc: ConfigBloc());
+	final InventorymanagementBloc inventorymanagementBloc = InventorymanagementBloc(configBloc: ConfigBloc());
+	final SupplierManagementBloc supplierManagementBloc = SupplierManagementBloc(configBloc: ConfigBloc());
 	runApp(ThemeProvider(
 		themes: appThemes,
 		saveThemesOnChange: true,
 		loadThemeOnInit: true,
-		child: MyApp(userManagerBlocInstance: userManagerBloc, orderManagerBlocInstance: orderManagerBloc, menuBlocInstance: menuBloc, userBlocInstance: userBloc, configBlocInstance: configBloc, mainAppBlocInstance: mainAppBloc),
+		child: MyApp(userManagerBlocInstance: userManagerBloc, 
+		orderManagerBlocInstance: orderManagerBloc, 
+		menuBlocInstance: menuBloc, 
+		userBlocInstance: userBloc, 
+		configBlocInstance: configBloc,
+		mainAppBlocInstance: mainAppBloc,
+		inventoryManagementBlocInstance: inventorymanagementBloc,
+		supplierManagementBlocInstance: supplierManagementBloc),
 		)
 	);
 }
@@ -86,7 +97,18 @@ class MyApp extends StatelessWidget
 	final OrderManagerBloc orderManagerBlocInstance;
 	final MenuBloc menuBlocInstance;
 	final UserManagerBloc userManagerBlocInstance;
-	const MyApp({required this.userManagerBlocInstance ,required this.orderManagerBlocInstance, required this.menuBlocInstance, required this.userBlocInstance, required this.configBlocInstance, required this.mainAppBlocInstance, super.key});
+	final InventorymanagementBloc inventoryManagementBlocInstance;
+	final SupplierManagementBloc supplierManagementBlocInstance;
+
+	const MyApp({required this.userManagerBlocInstance ,
+	required this.orderManagerBlocInstance, 
+	required this.menuBlocInstance, 
+	required this.userBlocInstance, 
+	required this.configBlocInstance, 
+	required this.mainAppBlocInstance, 
+	required this.inventoryManagementBlocInstance,
+	required this.supplierManagementBlocInstance,
+	super.key});
 
 	@override
 	Widget build(BuildContext context)
@@ -110,6 +132,12 @@ class MyApp extends StatelessWidget
 				),
 				BlocProvider(
 					create: (context) => userManagerBlocInstance,
+				),
+				BlocProvider(
+					create: (context) => inventoryManagementBlocInstance,
+				),
+				BlocProvider(
+					create: (context) => supplierManagementBlocInstance,
 				)
 			],
 			child: ThemeConsumer(
@@ -118,7 +146,14 @@ class MyApp extends StatelessWidget
 					{
 						return MaterialApp(
 							theme: ThemeProvider.themeOf(context).data,
-							home:  MainApp(userManagerBloc: userManagerBlocInstance,orderManagerBloc: orderManagerBlocInstance,menuBloc: menuBlocInstance, userBloc: userBlocInstance, configBloc: configBlocInstance, mainAppBloc: mainAppBlocInstance),
+							home:  MainApp(userManagerBloc: userManagerBlocInstance,
+							orderManagerBloc: orderManagerBlocInstance,
+							menuBloc: menuBlocInstance, 
+							userBloc: userBlocInstance, 
+							configBloc: configBlocInstance, 
+							mainAppBloc: mainAppBlocInstance,
+							inventoryManagementBloc: inventoryManagementBlocInstance,
+							supplierManagementBloc: supplierManagementBlocInstance,),
 						);
 					}
 				)

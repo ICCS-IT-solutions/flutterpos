@@ -2,8 +2,10 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:flutterpos/Bloc/modules/inventorymanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/suppliermanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
-import "package:flutterpos/Screens/ordermanagerscreen.dart";
+import "package:flutterpos/Screens/inventorymanagement.dart";
 
 import "../Bloc/modules/order_manager_bloc.dart";
 import "../Bloc/modules/menu_bloc.dart";
@@ -18,11 +20,19 @@ class MainScreen extends StatelessWidget
 	final MenuBloc menuBloc;
 	final UserManagerBloc userManagerBloc;
 	final OrderManagerBloc orderManagerBloc;
+	final InventorymanagementBloc inventoryManagementBloc;
+	final SupplierManagementBloc supplierManagementBloc;
 	//Add the instances and params for the other blocs as needed, also so they can be passed to the other screen classes when instantiated, thus managing them from a central loc rather than all over the place...
 	//As again, in my code files, I rule, therefore I decide the style rules :P
 	//One most important rule: No stair-stepped curly brackets, line them up vertically. 
 	//Need a way to set the tab stop to 4 spaces not two, ugh.
-	const MainScreen({required this.userManagerBloc ,required this.orderManagerBloc,required this.menuBloc, required this.userBloc, super.key});
+	const MainScreen({required this.userManagerBloc,
+	required this.orderManagerBloc,
+	required this.menuBloc, 
+	required this.userBloc,
+	required this.inventoryManagementBloc,
+	required this.supplierManagementBloc,
+	super.key});
 
 	@override
 	Widget build(BuildContext context) 
@@ -88,7 +98,7 @@ class MainScreen extends StatelessWidget
 									}
 								},
 								icon: const Icon(Icons.settings_applications_outlined),
-								label: const Text("User manager")
+								label: const Text("User management")
 							),
 							ElevatedButton.icon(onPressed: ()
 							{
@@ -105,12 +115,18 @@ class MainScreen extends StatelessWidget
 								{
 									Navigator.of(context).push(
 										MaterialPageRoute(
-											builder: (context)=>OrderManagerScreen(userBloc: userBloc, orderManagerBloc: orderManagerBloc)
+											builder: (context) 
+											{
+												return InventoryManagementScreen(userBloc: userBloc,
+												supplierManagementBloc: supplierManagementBloc,
+												orderManagerBloc: orderManagerBloc, 
+												inventoryManagementBloc:inventoryManagementBloc);
+											}
 										)
 									);
 								}, 
 							icon: const Icon(Icons.checklist_outlined), 
-							label: const Text("Order manager")),
+							label: const Text("Inventory management")),
 							ElevatedButton.icon(
 								onPressed: () 
 								{
