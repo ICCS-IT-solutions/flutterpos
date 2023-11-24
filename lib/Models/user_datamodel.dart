@@ -286,4 +286,7 @@ class UserRightsHandler
 			UserRight.Can_Generate_Inventory_Reports
 		];
 	}
+
+	//Need a copyWith method for the purpose of updating an existing user selectively.
+	//Also need a way to make sure that the permissions are adjusted to the role of the user.
 }

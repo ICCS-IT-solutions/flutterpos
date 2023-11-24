@@ -89,12 +89,35 @@ class UserManagerBloc extends Bloc<UserManagerBlocEvent, UserManagerBlocState>
 		});
 		on<EditUser>((event, emit) 
 		{
-		
+			//Noting to do yet.
 		});
 
-		on<Register>((event, emit) 
+		on<Register>((event, emit) async
 		{
-		
+			emit(UserManagerBlocInitial());
+			final result = await dbHelper.CreateEntry(dbName, tableName, event.userData.toDictionary());
+			if(result == 0)
+			{
+				emit(UserManagerBlocSuccess(registeredUsers: [], AuthState: false, SuccessMessage: "User registration successful"));
+			}
+			//Something went wrong here
+			else
+			{
+				emit(UserManagerBlocFailure(errorMessage: "Something went wrong while registering a new user"));
+			}
+		});
+		on<DeleteUser>((event, emit) async 
+		{
+			emit(UserManagerBlocInitial());
+			final result = await dbHelper.DeleteEntry(dbName, tableName, "userName = ?",[event.userData.toDictionary()]);
+			if(result == 0)
+			{
+				emit(UserManagerBlocSuccess(registeredUsers: [], AuthState: false, SuccessMessage: "User deleted successfully"));
+			}
+			else
+			{
+				emit(UserManagerBlocFailure(errorMessage: "Something went wrong while deleting the user."));
+			}
 		});
 	}
 }

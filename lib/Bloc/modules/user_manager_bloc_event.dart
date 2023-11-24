@@ -22,3 +22,9 @@ class EditUser extends UserManagerBlocEvent
 	final User userData;
 	EditUser({required this.userData});
 }
+
+class DeleteUser extends UserManagerBlocEvent
+{
+	final User userData;
+	DeleteUser({required this.userData});
+}
