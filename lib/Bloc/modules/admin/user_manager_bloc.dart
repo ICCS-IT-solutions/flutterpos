@@ -8,8 +8,8 @@ import 'package:flutterpos/Bloc/modules/config_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import '../../Helpers/dbhelper.dart';
-import '../../Models/user_datamodel.dart';
+import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutterpos/Models/localuser_datamodel.dart';
 
 part 'user_manager_bloc_event.dart';
 part 'user_manager_bloc_state.dart';
@@ -84,7 +84,7 @@ class UserManagerBloc extends Bloc<UserManagerBlocEvent, UserManagerBlocState>
 		{	
 			emit(UserManagerBlocLoading(loadingMsg: "Loading user data, please be patient"));
 			final rawUserData = await dbHelper.ReadEntries(dbName, tableName, null, null);
-			final users = rawUserData?.map((item) => User.fromDictionary(item)).toList() ?? [];
+			final users = rawUserData?.map((item) => LocalUser.fromDictionary(item)).toList() ?? [];
 			emit(UserManagerBlocSuccess(registeredUsers: users, AuthState: true, SuccessMessage: "User data loaded successfully"));
 		});
 		on<EditUser>((event, emit) 

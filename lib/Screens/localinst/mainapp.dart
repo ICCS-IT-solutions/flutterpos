@@ -10,12 +10,12 @@ import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart"
 import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
+import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
 
-import "../Bloc/main_app_bloc.dart";
-import "../Bloc/modules/menu_bloc.dart";
-import '../Bloc/modules/inventory/order_manager_bloc.dart';
-import "../Bloc/modules/user_bloc.dart";
+import "package:flutterpos/Bloc/main_app_bloc.dart";
+import "package:flutterpos/Bloc/modules/menu_bloc.dart";
+import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
+import "package:flutterpos/Bloc/modules/user_bloc.dart";
 
 import "loginscreen.dart";
 import "setupscreen.dart";

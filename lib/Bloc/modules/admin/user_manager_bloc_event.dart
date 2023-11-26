@@ -6,25 +6,25 @@ sealed class UserManagerBlocEvent
 
 class Register extends UserManagerBlocEvent 
 {
-	final User userData;
+	final LocalUser userData;
 	Register({required this.userData});
 }
 
 class LoadUsers extends UserManagerBlocEvent 
 {
 	//retrieve registered users from the database
-	final List<User> users;
+	final List<LocalUser> users;
 	LoadUsers({required this.users});
 }
 
 class EditUser extends UserManagerBlocEvent 
 {
-	final User userData;
+	final LocalUser userData;
 	EditUser({required this.userData});
 }
 
 class DeleteUser extends UserManagerBlocEvent
 {
-	final User userData;
+	final LocalUser userData;
 	DeleteUser({required this.userData});
 }

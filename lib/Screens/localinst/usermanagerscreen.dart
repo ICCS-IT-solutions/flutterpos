@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
 
-import '../Bloc/modules/user_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
 
 class UserManagementScreen extends StatefulWidget 
 {

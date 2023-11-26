@@ -6,10 +6,10 @@ import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
-import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
 import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
 import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
-import 'package:flutterpos/Screens/mainapp.dart';
+import 'package:flutterpos/Screens/localinst/mainapp.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:theme_provider/theme_provider.dart';
 

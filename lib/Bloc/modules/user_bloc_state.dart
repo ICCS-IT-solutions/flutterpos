@@ -5,7 +5,7 @@ part of 'user_bloc.dart';
 @immutable
 class UserBlocState 
 {
-	final User? user;
+	final LocalUser? user;
 	final bool isLoading;
 	final bool isAuthenticated;
 	final String message;
@@ -29,7 +29,7 @@ class AuthenticationSuccess extends UserBlocState
 {
 	final String AuthMessage;
 	final bool AuthState;
-	final User? currentUser;
+	final LocalUser? currentUser;
 	const AuthenticationSuccess({required this.AuthState, required this.AuthMessage, required this.currentUser}) : super(user: currentUser, isLoading: false, isAuthenticated: AuthState, message: AuthMessage);
 }
 

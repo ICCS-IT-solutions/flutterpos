@@ -8,7 +8,7 @@ class UserManagerBlocState
 	final bool isLoading;
 	final bool isAuthenticated;
 	final String message;
-	final List<User> users;
+	final List<LocalUser> users;
 
 	const UserManagerBlocState({required this.users,required this.isLoading, required this.isAuthenticated, required this.message});
 }
@@ -22,7 +22,7 @@ class UserManagerBlocSuccess extends UserManagerBlocState
 {
 	final String SuccessMessage;
 	final bool AuthState;
-	final List<User> registeredUsers;
+	final List<LocalUser> registeredUsers;
 
 	UserManagerBlocSuccess({required this.registeredUsers, required this.AuthState, required this.SuccessMessage}) : super(users: registeredUsers, isLoading: false, isAuthenticated: AuthState, message: SuccessMessage);
 }

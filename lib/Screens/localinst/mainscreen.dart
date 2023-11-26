@@ -6,13 +6,13 @@ import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart"
 import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
 import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/user_manager_bloc.dart";
+import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
 import "package:flutterpos/Screens/inventory/inventorymanagement.dart";
 
-import "../Bloc/modules/inventory/order_manager_bloc.dart";
-import "../Bloc/modules/menu_bloc.dart";
-import "../Bloc/modules/user_bloc.dart";
-import "../Models/user_datamodel.dart";
+import "package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart";
+import "package:flutterpos/Bloc/modules/menu_bloc.dart";
+import "package:flutterpos/Bloc/modules/user_bloc.dart";
+import "package:flutterpos/Models/localuser_datamodel.dart";
 import "menuscreen.dart";
 import "usermanagerscreen.dart";
 
@@ -69,7 +69,7 @@ class MainScreen extends StatelessWidget
 							ElevatedButton.icon(
 								onPressed: ()
 								{
-									if(userBloc.state.user!.userRole == Role.Administrator || userBloc.state.user!.userRole == Role.Manager || userBloc.state.user!.userRole == Role.Supervisor)
+									if(userBloc.state.user!.userRole == LocalUserRole.Administrator || userBloc.state.user!.userRole == LocalUserRole.Manager || userBloc.state.user!.userRole == LocalUserRole.Supervisor)
 									{
 										Navigator.of(context).push(
 											MaterialPageRoute(

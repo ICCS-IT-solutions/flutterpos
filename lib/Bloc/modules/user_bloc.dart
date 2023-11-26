@@ -1,3 +1,4 @@
+//Will replace this with auth at a later point.
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
@@ -7,7 +8,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutterpos/Auth/AuthManager.dart';
 import 'package:flutterpos/Bloc/modules/config_bloc.dart';
 import 'package:flutterpos/Helpers/dbhelper.dart';
-import 'package:flutterpos/Models/user_datamodel.dart';
+import 'package:flutterpos/Models/localuser_datamodel.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
@@ -109,7 +110,7 @@ class UserBloc extends Bloc<UserBlocEvent, UserBlocState>
 					}
 					else
 					{
-					emit(AuthenticationSuccess(AuthState: true, AuthMessage: "User ${event.userName} logged in successfully.",currentUser: User.fromDictionary(userResult)));
+					emit(AuthenticationSuccess(AuthState: true, AuthMessage: "User ${event.userName} logged in successfully.",currentUser: LocalUser.fromDictionary(userResult)));
 					logger.i("User logged in successfully.");
 					}
 				}

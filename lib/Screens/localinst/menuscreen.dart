@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
-import '../Bloc/modules/menu_bloc.dart';
-import '../Bloc/modules/user_bloc.dart';
-import '../Models/menuitem_datamodel.dart';
-import '../Models/user_datamodel.dart';
-import '../Widgets/menuitem_dialog.dart';
+import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
+import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Models/menuitem_datamodel.dart';
+import 'package:flutterpos/Models/localuser_datamodel.dart';
+import 'package:flutterpos/Widgets/menuitem_dialog.dart';
 //The menu screen should essentially be used to manage the menu items themselves, such as setting prices, deleting and/or adding new ones to the menu.
 //The menu from which the user orders should be on the mainscreen. 
 //What should be presented here is a tabulated list that can be managed with the appropriate user rights.
@@ -240,7 +240,7 @@ class _MenuScreenState extends State<MenuScreen>
 				final currentUser  = state.user;
 				Logger().i("Current user: ${currentUser?.fullName}");
 				//Check whether the user has the Can_Manage_Inventory right:
-				if(currentUser!.userRights.contains(UserRight.Can_Manage_Inventory))
+				if(currentUser!.userRights.contains(LocalUserRight.Can_Manage_Inventory))
 				{
 					return BuildMenuManagementUI(context);
 				}

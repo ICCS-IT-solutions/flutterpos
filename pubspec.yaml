@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^1.0.4
   intl: ^0.18.1
   flutter_spreadsheet_ui: ^0.0.5
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterpos/Bloc/modules/user_bloc.dart';
-import 'package:flutterpos/Bloc/modules/user_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
 import 'package:logger/logger.dart';
 
-import '../Models/user_datamodel.dart';
+import 'package:flutterpos/Models/localuser_datamodel.dart';
 
 //Should simplify the form needed to handle login and registration with a user controllable context switch.
 //Note that this context switch is not the BuildContext variable, but can be a boolean called isNewUser.
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen>
 	//Dropdown list:
 	List<DropdownMenuItem<String>>? BuildItemList()
 	{
-		return Role.values.map((role)
+		return LocalUserRole.values.map((role)
 		{
 			return DropdownMenuItem(
 				///Here we don't change anything because this is not a visual representation
@@ -165,8 +165,9 @@ class _LoginScreenState extends State<LoginScreen>
 														child: Text("User")
 													)
 													],
-													onChanged: (value) => setState(() {
-													selectedRole = value!;
+													onChanged: (value) => setState(() 
+													{
+														selectedRole = value!;
 													})
 												)
 											]
@@ -220,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen>
 										{
 											if(isNewUser)
 											{
-											final user = User(
+											final user = LocalUser(
 												userName: userNameController.text,
 												fullName: "${userFirstNameController.text}  ${userSurnameController.text}",
 												emailAddress: emailAddressController.text,
