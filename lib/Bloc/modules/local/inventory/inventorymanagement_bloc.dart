@@ -4,22 +4,22 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutterpos/Models/shortage_datamodel.dart';
+import 'package:flutterpos/Models/inventoryitem_datamodel.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutterpos/Helpers/dbhelper.dart';
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 
-part "shortagemanagement_event.dart";
-part "shortagemanagement_state.dart";
+part 'inventorymanagement_event.dart';
+part 'inventorymanagement_state.dart';
 
-class ShortageManagementBloc extends Bloc<ShortageManagementBlocEvent, ShortageManagementBlocState> 
+class InventorymanagementBloc extends Bloc<InventorymanagementBlocEvent, InventorymanagementBlocState>
 {
 	Logger logger = Logger();
 	final ConfigBloc configBloc;
 	String? dbName;
-	final String tableName = 'shortages';
+	final String tableName = "inventory";
 	late MysqlDbHelper dbHelper;
 
 	Future<MysqlDbHelper?> initDbHelper() async
@@ -48,11 +48,11 @@ class ShortageManagementBloc extends Bloc<ShortageManagementBlocEvent, ShortageM
 	{
 		dbHelper = await initDbHelper() ?? MysqlDbHelper();
 	}
-		Future<void> _initDatabaseName() async
+	Future<void> _initDatabaseName() async
 	{
 		dbName = await RetrieveDatabaseName();
 	}
-		Future<String?> RetrieveDatabaseName() async
+	Future<String?> RetrieveDatabaseName() async
 	{
 		try
 		{
@@ -73,36 +73,19 @@ class ShortageManagementBloc extends Bloc<ShortageManagementBlocEvent, ShortageM
 			logger.e("Something went wrong while trying to retrieve the database name: $ex");
 			return null;
 		}
-	}
-
-	ShortageManagementBloc({required this.configBloc}) : super(ShortageManagementBlocInitial())
+	}	
+	
+	InventorymanagementBloc({required this.configBloc}) : super(InventorymanagementInitial()) 
 	{
 		_initDbHelper();
 		_initDatabaseName();
 
-		on<LoadShortages>((event, emit) async
+		on<LoadInventory>((event, emit) async
 		{
-			emit(ShortageManagementBlocInitial());
-			final shortagesData = await dbHelper.ReadEntries(dbName, tableName, null, null);
-			final shortages = shortagesData?.map((item)=> Shortage.fromDictionary(item)).toList() ?? [];
-			emit(ShortageManagementBlocSuccess(shortages: shortages, shortage: null));
-		});
-
-		on<AddShortage>((event, emit) async
-		{
-			emit(ShortageManagementBlocInitial());
-			final shortage = event.shortage;
-			final shortageData = shortage.toDictionary();
-			final result = await dbHelper.CreateEntry(dbName, tableName, shortageData);
-			if (result == 0)
-			{
-				emit(ShortageManagementBlocSuccess(shortages: const [], shortage: shortage));
-			}
-			else
-			{	
-				//Something went wrong here.
-				emit(const ShortageManagementBlocFailure());
-			}
+			emit(InventorymanagementLoading());
+			final inventoryItemData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+			final inventoryItems = inventoryItemData?.map((item) => InventoryItem.fromDictionary(item)).toList() ?? [];
+			emit(InventorymanagementSuccess(inventory: inventoryItems, inventoryItem: null));
 		});
 	}
 }

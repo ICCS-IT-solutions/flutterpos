@@ -2,16 +2,16 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart";
-import "package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart";
-import 'package:flutterpos/Bloc/modules/admin/user_manager_bloc.dart';
-import "package:flutterpos/Screens/inventory/inventorymanagement.dart";
+import "package:flutterpos/Bloc/modules/local/inventory/inventorymanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/inventory/productmanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/inventory/shortagemanagement_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/inventory/suppliermanagement_bloc.dart";
+import 'package:flutterpos/Bloc/modules/local/admin/user_manager_bloc.dart';
+import "package:flutterpos/Screens/localinst/inventory/inventorymanagement.dart";
 
-import "package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart";
-import "package:flutterpos/Bloc/modules/menu_bloc.dart";
-import "package:flutterpos/Bloc/modules/user_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/inventory/order_manager_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/menu_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/user_bloc.dart";
 import "package:flutterpos/Models/localuser_datamodel.dart";
 import "menuscreen.dart";
 import "usermanagerscreen.dart";

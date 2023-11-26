@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 

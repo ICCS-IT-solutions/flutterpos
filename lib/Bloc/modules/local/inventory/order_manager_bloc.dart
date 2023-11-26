@@ -9,7 +9,7 @@ import 'package:flutterpos/Models/order_datamodel.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 
 part 'order_manager_bloc_event.dart';
 part 'order_manager_bloc_state.dart';

@@ -9,7 +9,7 @@ import 'package:flutterpos/Helpers/dbhelper.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import '../../config/configmgr.dart';
+import 'package:flutterpos/config/configmgr.dart';
 
 part "configmanagerevent.dart";
 part "configmanagerstate.dart";

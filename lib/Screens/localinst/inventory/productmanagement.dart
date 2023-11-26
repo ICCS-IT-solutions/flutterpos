@@ -3,8 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
-import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/productmanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/user_bloc.dart';
 
 class ProductManagementScreen extends StatefulWidget
 {

@@ -8,7 +8,7 @@ import "package:flutter/material.dart";
 import "package:image_picker/image_picker.dart";
 import "package:logger/logger.dart";
 
-import "../Bloc/modules/menu_bloc.dart";
+import "package:flutterpos/Bloc/modules/local/menu_bloc.dart";
 import "../Models/menuitem_datamodel.dart";
 
 //My rules: 4 space indents. 

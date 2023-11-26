@@ -1,25 +1,24 @@
-
-
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
-import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterpos/Models/supplier_datamodel.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-part "auth_event.dart";
-part "auth_state.dart";
+import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
+import 'dart:convert';
+import 'dart:io';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState>
+part 'suppliermanagement_event.dart';
+part 'suppliermanagement_state.dart';
+
+class SupplierManagementBloc extends Bloc<SupplierManagementBlocEvent, SupplierManagementBlocState>
 {
 	Logger logger = Logger();
 	final ConfigBloc configBloc;
 	String? dbName;
-	final String tableName = 'users';
+	final String tableName = "suppliers";
 	late MysqlDbHelper dbHelper;
 	
 	Future<MysqlDbHelper?> initDbHelper() async
@@ -48,11 +47,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
 	{
 		dbHelper = await initDbHelper() ?? MysqlDbHelper();
 	}
-		Future<void> _initDatabaseName() async
+
+	Future<void> _initDatabaseName() async
 	{
 		dbName = await RetrieveDatabaseName();
 	}
-		Future<String?> RetrieveDatabaseName() async
+
+	Future<String?> RetrieveDatabaseName() async
 	{
 		try
 		{
@@ -74,33 +75,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
 			return null;
 		}
 	}
-	
-	AuthBloc({required this.configBloc}) : super(AuthInitial())
+
+	SupplierManagementBloc({required this.configBloc}) : super(SupplierManagementBlocInitial()) 
 	{
-		//Initialize the database helper:
 		_initDbHelper();
 		_initDatabaseName();
 
-		//Event handlers
-		on<HandleLogin>((event, emit) async
+		on<LoadSuppliers>((event, emit) async
 		{
-
-		});
-
-		on<HandleLogoff>((event, emit) async
-		{
-
-		});
-
-		on<HandleRegister>((event, emit) 
-		{
-		  
-		});
-		
-		//Triggers a reset password method in the restapi frontend code.
-		on<HandleResetPassword>((event, emit) async
-		{
-
+			emit(SupplierManagementBlocLoading());
+			final suppliersData = await dbHelper.ReadEntries(dbName, tableName, null, null);
+			final suppliers = suppliersData?.map((item) => Supplier.fromDictionary(item)).toList() ?? [];
+			emit(SupplierManagementBlocSuccess(suppliers: suppliers, supplier: null));
 		});
 	}
 }

@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
-import "../../config/setup.dart";
+import "package:flutterpos/config/setup.dart";
 
 part 'config_bloc_event.dart';
 part 'config_bloc_state.dart';

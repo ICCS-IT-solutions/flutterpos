@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 
 class SetupScreen extends StatefulWidget
 {

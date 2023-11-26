@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
-import 'package:flutterpos/Bloc/modules/menu_bloc.dart';
-import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/menu_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/user_bloc.dart';
 import 'package:flutterpos/Models/menuitem_datamodel.dart';
 import 'package:flutterpos/Models/localuser_datamodel.dart';
 import 'package:flutterpos/Widgets/menuitem_dialog.dart';

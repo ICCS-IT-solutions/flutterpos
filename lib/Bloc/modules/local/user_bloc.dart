@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutterpos/Auth/AuthManager.dart';
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 import 'package:flutterpos/Helpers/dbhelper.dart';
 import 'package:flutterpos/Models/localuser_datamodel.dart';
 import 'package:logger/logger.dart';

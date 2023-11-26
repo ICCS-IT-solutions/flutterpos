@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
-import 'package:flutterpos/Bloc/modules/inventory/inventorymanagement_bloc.dart';
-import 'package:flutterpos/Bloc/modules/inventory/productmanagement_bloc.dart';
-import 'package:flutterpos/Bloc/modules/inventory/shortagemanagement_bloc.dart';
-import 'package:flutterpos/Bloc/modules/inventory/suppliermanagement_bloc.dart';
-import 'package:flutterpos/Screens/inventory/productmanagement.dart';
-import 'package:flutterpos/Screens/inventory/suppliermanagement.dart';
-import 'package:flutterpos/Screens/inventory/shortagemanagement.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/inventorymanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/productmanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/shortagemanagement_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/suppliermanagement_bloc.dart';
+import 'package:flutterpos/Screens/localinst/inventory/productmanagement.dart';
+import 'package:flutterpos/Screens/localinst/inventory/suppliermanagement.dart';
+import 'package:flutterpos/Screens/localinst/inventory/shortagemanagement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutterpos/Bloc/modules/inventory/order_manager_bloc.dart';
-import 'package:flutterpos/Bloc/modules/user_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/inventory/order_manager_bloc.dart';
+import 'package:flutterpos/Bloc/modules/local/user_bloc.dart';
 import 'ordermanagement.dart';
 
 //Immediate objective for the inventory management aspect: Create a dashboard type interface to serve as an overview of products, inventory, orders and suppliers

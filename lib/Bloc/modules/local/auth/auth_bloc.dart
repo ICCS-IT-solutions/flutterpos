@@ -1,27 +1,27 @@
+
+
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutterpos/Models/product_datamodel.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
+import 'package:flutterpos/Helpers/dbhelper.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import 'package:flutterpos/Helpers/dbhelper.dart';
-import 'package:flutterpos/Bloc/modules/config_bloc.dart';
+part "auth_event.dart";
+part "auth_state.dart";
 
-part "productmanagement_event.dart";
-part "productmanagement_state.dart";
-
-class ProductManagementBloc extends Bloc<ProductManagementBlocEvent, ProductManagementBlocState> 
+class AuthBloc extends Bloc<AuthEvent, AuthState>
 {
 	Logger logger = Logger();
 	final ConfigBloc configBloc;
 	String? dbName;
-	final String tableName = "products";
+	final String tableName = 'users';
 	late MysqlDbHelper dbHelper;
-
+	
 	Future<MysqlDbHelper?> initDbHelper() async
 	{
 		try
@@ -48,11 +48,11 @@ class ProductManagementBloc extends Bloc<ProductManagementBlocEvent, ProductMana
 	{
 		dbHelper = await initDbHelper() ?? MysqlDbHelper();
 	}
-	Future<void> _initDatabaseName() async
+		Future<void> _initDatabaseName() async
 	{
 		dbName = await RetrieveDatabaseName();
 	}
-	Future<String?> RetrieveDatabaseName() async
+		Future<String?> RetrieveDatabaseName() async
 	{
 		try
 		{
@@ -74,17 +74,33 @@ class ProductManagementBloc extends Bloc<ProductManagementBlocEvent, ProductMana
 			return null;
 		}
 	}
-	ProductManagementBloc({required this.configBloc}) :super (ProductManagementBlocInitial())
+	
+	AuthBloc({required this.configBloc}) : super(AuthInitial())
 	{
+		//Initialize the database helper:
 		_initDbHelper();
 		_initDatabaseName();
 
-		on<LoadProducts>((event, emit) async
+		//Event handlers
+		on<HandleLogin>((event, emit) async
 		{
-			emit(ProductManagementBlocInitial());
-			final productsData = await dbHelper.ReadEntries(dbName, tableName, null, null);
-			final products = productsData?.map((item)=> Product.fromDictionary(item)).toList() ?? [];
-			emit(ProductManagementBlocSuccess(product: null, products: products));
+
+		});
+
+		on<HandleLogoff>((event, emit) async
+		{
+
+		});
+
+		on<HandleRegister>((event, emit) 
+		{
+		  
+		});
+		
+		//Triggers a reset password method in the restapi frontend code.
+		on<HandleResetPassword>((event, emit) async
+		{
+
 		});
 	}
 }

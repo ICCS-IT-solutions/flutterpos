@@ -7,9 +7,9 @@ import 'package:bloc/bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
-import '../../Helpers/dbhelper.dart';
-import '../../Models/menuitem_datamodel.dart';
-import 'config_bloc.dart';
+import 'package:flutterpos/Helpers/dbhelper.dart';
+import 'package:flutterpos/Models/menuitem_datamodel.dart';
+import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
 
 part 'menu_bloc_event.dart';
 part 'menu_bloc_state.dart';
