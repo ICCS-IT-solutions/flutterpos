@@ -1,9 +1,10 @@
 
-
+//This file will be used with the hosted mode installation.
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
 import 'dart:io';
+import "package:http/http.dart" as http;
 
 import 'package:bloc/bloc.dart';
 import 'package:flutterpos/Bloc/modules/main/config_bloc.dart';
@@ -17,6 +18,7 @@ part "auth_state.dart";
 class AuthBloc extends Bloc<AuthEvent, AuthState>
 {
 	Logger logger = Logger();
+	final apiUrl = "http://localhost/pos-api";
 	final ConfigBloc configBloc;
 	String? dbName;
 	final String tableName = 'users';
@@ -84,7 +86,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>
 		//Event handlers
 		on<HandleLogin>((event, emit) async
 		{
-
+			final userdata = {"user_name": event.username, "password": event.password};
+			try
+			{
+				final response = await http.post(
+					Uri.parse(apiUrl),
+					body: {'login:', jsonEncode(userdata)},
+				);
+				if(response.statusCode==200)
+				{
+					emit(AuthSuccess(message: "Login successful"));
+				}
+				else
+				{
+					emit(AuthFailure(errorMessage: "Login failed"));
+				}
+			}
+			catch(ex)
+			{
+				logger.e("Something went wrong during login: $ex");
+			}
 		});
 
 		on<HandleLogoff>((event, emit) async
